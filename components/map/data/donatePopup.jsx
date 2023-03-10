@@ -25,7 +25,7 @@ const DonatePopup = (props) => {
             <h1 class="text-2xl font-bold mb-4">Baum Nr.{props.id}</h1>
             <div className="grid grid-cols-12">
                 <p>{address}</p>
-                <p class="text-lg col-span-12 text-xs">Mit Ihrer Spende können Sie hier einen Baum pflanzen!</p>
+                <p class="sm:text-lg col-span-12 text-xs">Mit Ihrer Spende können Sie hier einen Baum pflanzen!</p>
             </div>
             <div className="grid-cols-12 mt-4">
                 <Button1 dataID={props.dataID} onClick={handleClick}>

@@ -12,12 +12,12 @@ const PersonalData = (props) => {
                     ></div>
                 </div>
                 <div className="col-span-9">
-                    <p class="text-lg">{props.name}</p>
-                    <p class="text-lg">Spende: €{props.sum}</p>
+                    <p class="text">{props.name}</p>
+                    <p class="text">Spende: €{props.sum}</p>
                 </div>
             </div>
             <div className="grid-cols-12 mt-4">
-                <p className="text-sm">{props.kommentar}</p>
+                <p className="text-xs sm:text-sm">{props.kommentar}</p>
             </div>
         </div>
     );
