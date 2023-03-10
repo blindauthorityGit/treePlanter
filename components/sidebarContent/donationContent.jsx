@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Data from "../../components/map/data";
 import { fetchAddressFromCoordinates } from "../../functions/getAdress";
 //ASSETS
@@ -7,10 +7,35 @@ import Tree2 from "../../assets/trees/tree2.png";
 import Tree3 from "../../assets/trees/tree3.png";
 import Tree4 from "../../assets/trees/tree4.png";
 
+// STORE
+import { DataContext } from "../../context/dataContext";
+import { PaymentProvider, PaymentContext } from "../../context/paymentContext";
+
 function TreeDonationModal(props) {
     const [activeStep, setActiveStep] = useState(0);
     const [id, setID] = useState(0);
     const [adress, setAdress] = useState("");
+
+    // STORE
+    const [data, setData] = useContext(DataContext);
+    const { isOpen, setIsOpen, toggleSidebarRight } = useContext(PaymentContext);
+
+    // FUNCTION TO UPDATE DATA
+    const handleUpdate = (index, newValue) => {
+        setData((prevData) => {
+            // Use the map method to update the element at the specified index
+            return prevData.map((element, i) => {
+                if (i === index) {
+                    // Update the property of the element
+                    return {
+                        ...element,
+                        propertyToBeUpdated: newValue,
+                    };
+                }
+                return element;
+            });
+        });
+    };
 
     useEffect(() => {
         setID(props.id);
@@ -22,6 +47,7 @@ function TreeDonationModal(props) {
         };
 
         fetchAddress();
+        console.log(data);
     }, [props.id]);
 
     const [tree, setTree] = useState("");
@@ -65,8 +91,53 @@ function TreeDonationModal(props) {
         setReceiptNeeded(event.target.checked);
     };
 
+    function getIconSizeString(size) {
+        switch (size) {
+            case 0:
+                return [60, 125];
+            case 1:
+                return [70, 70];
+            case 2:
+                return [70, 120];
+            case 3:
+                return [80, 110];
+            default:
+                return "unknown";
+        }
+    }
+
     const handlePayment = () => {
         // Implement payment logic
+        console.log(name, comment, treeIcon, donationAmount, tree);
+        const formData = {
+            id: id,
+            name: name,
+            comment: comment,
+            tree: treeIcon,
+            sum: donationAmount,
+            location: tree,
+            iconSize: getIconSizeString(treeIcon),
+        };
+        console.log(formData);
+        console.log(document.getElementById(`${id}`));
+        console.log(Tree2.src);
+        const el = document.getElementById(`${id}`);
+        el.style.backgroundImage = `url(${Tree2.src})`;
+        console.log(formData);
+        setData((prevState) => {
+            const newData = [...prevState];
+            console.log(newData);
+            data[id].properties.isClaimed = true;
+            data[id].properties.iconSize = formData.iconSize;
+            data[id].donator.name = formData.name;
+            data[id].donator.avatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+            data[id].donator.kommentar = formData.comment;
+            data[id].donator.sum = formData.sum;
+            data[id].donator.tree = formData.tree;
+            // newData[id] = formData;
+            return newData;
+        });
+        toggleSidebarRight();
     };
 
     const steps = [
@@ -154,29 +225,29 @@ function TreeDonationModal(props) {
             content: (
                 <div className="grid grid-cols-4 gap-4 mt-6">
                     <button
-                        onClick={() => handleTreeSelection("Tree 1")}
-                        className={`border rounded p-2 ${treeIcon === "Tree 1" ? "bg-primaryColor-100" : ""}`}
+                        onClick={() => handleTreeSelection(0)}
+                        className={`border rounded p-2 ${treeIcon === 0 ? "bg-primaryColor-100" : ""}`}
                     >
                         <img src={Tree1.src} alt="Tree 1" />
                         Tree 1
                     </button>
                     <button
-                        onClick={() => handleTreeSelection("Tree 2")}
-                        className={`border rounded p-2 ${treeIcon === "Tree 2" ? "bg-primaryColor-100" : ""}`}
+                        onClick={() => handleTreeSelection(1)}
+                        className={`border rounded p-2 ${treeIcon === 1 ? "bg-primaryColor-100" : ""}`}
                     >
                         <img src={Tree2.src} alt="Tree 2" />
                         Tree 2
                     </button>
                     <button
-                        onClick={() => handleTreeSelection("Tree 3")}
-                        className={`border rounded p-2 ${treeIcon === "Tree 3" ? "bg-primaryColor-100" : ""}`}
+                        onClick={() => handleTreeSelection(2)}
+                        className={`border rounded p-2 ${treeIcon === 2 ? "bg-primaryColor-100" : ""}`}
                     >
                         <img src={Tree3.src} alt="Tree 3" />
                         Tree 3
                     </button>
                     <button
-                        onClick={() => handleTreeSelection("Tree 4")}
-                        className={`border rounded p-2 ${treeIcon === "Tree 4" ? "bg-primaryColor-100" : ""}`}
+                        onClick={() => handleTreeSelection(3)}
+                        className={`border rounded p-2 ${treeIcon === 3 ? "bg-primaryColor-100" : ""}`}
                     >
                         <img src={Tree4.src} alt="Tree 4" />
                         Tree 4

@@ -108,3 +108,7 @@ The toggleSidebar() function removes this class from the element in order to exp
   .right.collapsed {
   transform: translateX(295px);
   }
+
+  .mapboxgl-popup {
+    z-index: 100
+  }

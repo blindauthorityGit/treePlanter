@@ -12,7 +12,7 @@ export default function Home() {
     return (
         <MainContainer width="max-w-[100%] container h-full grid-rows-2 m-auto" style={{ gridTemplateRows: "3fr 1fr" }}>
             <Head>
-                <title>Site title</title>
+                <title>Sabocon Tree Planter</title>
             </Head>
             <MapPage></MapPage>
             <Popup1 />

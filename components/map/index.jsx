@@ -12,6 +12,7 @@ import Data from "./data";
 //CONTEXT
 import { SidebarProvider, SidebarContext } from "../../context/sidebarContext";
 import { PaymentProvider, PaymentContext } from "../../context/paymentContext";
+import { DataContext } from "../../context/dataContext";
 
 //ASSETS
 import Tree1Claimed from "../../assets/trees/treeClaimed.png";
@@ -26,7 +27,7 @@ import PersonalData from "./data/personalData";
 import DonatePopup from "./data/donatePopup";
 import { SidebarButtons } from "../floater";
 import { Sidebar1, Sidebar2 } from "../sidebars";
-import { Button1 } from "../../components/buttons";
+import Overlay from "../../components/modal/overlay";
 import Goal from "../../components/goal";
 const DonatorList = dynamic(() => import("../../components/sidebarContent/donatorList"), {
     ssr: false,
@@ -44,9 +45,12 @@ function MapPage() {
     const [mapLoaded, setMapLoaded] = useState(null);
     const [flyToLocation, setFlyToLocation] = useState(null);
 
+    //Context Data
+    const [data, setData] = useContext(DataContext);
+
     //SIDEBAR
     const { toggleSidebar } = useContext(SidebarContext);
-    const { toggleSidebarRight } = useContext(PaymentContext);
+    const { isOpen, toggleSidebarRight } = useContext(PaymentContext);
     const [sidebarName, setSideBarName] = useState("");
     const [id, setID] = useState(0);
 
@@ -55,17 +59,11 @@ function MapPage() {
     }
 
     const mapContainer = useRef(null);
-    const rightRef = useRef(null);
-    const modalRef = useRef(new mapboxgl.Popup({ offset: 15 }));
-
-    const handleButtonClick = (e) => {
-        console.log("Clicked");
-    };
+    // const rightRef = useRef(null);
+    // const modalRef = useRef(new mapboxgl.Popup({ offset: 15 }));
 
     useEffect(() => {
         // Initialize map
-
-        console.log(Data, PersonalData);
 
         const map = new Map({
             container: mapContainer.current,
@@ -84,9 +82,8 @@ function MapPage() {
             })
         );
 
-        Data.map((marker, i) => {
+        data.map((marker, i) => {
             // Create a DOM element for each marker.
-            console.log(marker.geometry.coordinates);
             let personalData = "";
             if (marker.properties.isClaimed) {
                 personalData = ReactDOMServer.renderToString(
@@ -105,7 +102,6 @@ function MapPage() {
                         id={marker.properties.id}
                         coordinates={marker.geometry.coordinates}
                         dataID={marker.properties.id}
-                        onClick={handleButtonClick}
                     />
                 );
             }
@@ -161,11 +157,12 @@ function MapPage() {
                         console.log(index, e.currentTarget);
                         console.log(e.currentTarget.dataset.id, Data[index].geometry.coordinates);
                         setFlyToLocation(coordinates);
+                        popup.remove();
                     });
                 }
             });
         });
-    }, []);
+    }, [data]);
 
     useEffect(() => {
         if (mapLoaded && flyToLocation) {
@@ -223,6 +220,9 @@ function MapPage() {
             <div className="container p-16 col-span-12 row-start-2 row-end-2 mx-auto pt-6">
                 <Goal></Goal>
             </div>
+            {isOpen && <Overlay></Overlay>}
+            <div className="container ">Powered by Sabocon, 2023</div>
+
             {mapLoaded && <></>}
         </>
     );
