@@ -112,3 +112,22 @@ The toggleSidebar() function removes this class from the element in order to exp
   .mapboxgl-popup {
     z-index: 100
   }
+
+  .mapboxgl-popup-close-button {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0 0px 0 0;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem!important;
+    top: 0.5rem!important;
+    font-size: 1rem;
+}
+
+.mapboxgl-popup {
+  transition: all 0.08s ease-in-out;
+}
+
+.mapboxgl-popup.open {
+  opacity: 1;
+}

@@ -1,3 +1,17 @@
+import { useState, useEffect } from "react";
+import fetch from "isomorphic-unfetch";
+
+const fetchAvatar = async () => {
+    const response = await fetch("https://randomuser.me/api/");
+    const data = await response.json();
+    const avatarUrl = data.results[0].picture.large;
+    // setAvatarUrl(avatarUrl);
+    console.log(avatarUrl);
+    return avatarUrl;
+};
+
+fetchAvatar();
+
 const data = [
     {
         type: "Feature",
@@ -15,7 +29,7 @@ const data = [
         donator: {
             name: "Johannes Buchner",
             sum: 25,
-            avatar: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+            avatar: "https://randomuser.me/api/portraits/women/39.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 0,
         },
@@ -57,7 +71,7 @@ const data = [
         donator: {
             name: "Johannes Buchner",
             sum: 25,
-            avatar: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+            avatar: "https://randomuser.me/api/portraits/men/93.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 1,
         },
@@ -99,7 +113,7 @@ const data = [
         donator: {
             name: "Johannes Buchner",
             sum: 25,
-            avatar: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+            avatar: "https://randomuser.me/api/portraits/men/53.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 2,
         },
@@ -140,7 +154,7 @@ const data = [
         donator: {
             name: "Johannes Buchner",
             sum: 25,
-            avatar: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+            avatar: "https://randomuser.me/api/portraits/women/13.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 3,
         },
@@ -182,7 +196,7 @@ const data = [
         donator: {
             name: "Johannes Buchner",
             sum: 25,
-            avatar: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+            avatar: "https://randomuser.me/api/portraits/men/13.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 0,
         },
@@ -203,7 +217,7 @@ const data = [
         donator: {
             name: "Johannes Buchner",
             sum: 25,
-            avatar: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+            avatar: "https://randomuser.me/api/portraits/men/20.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 0,
         },

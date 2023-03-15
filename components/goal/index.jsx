@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { motion } from "framer-motion";
 import Data from "../map/data";
 
+//CONTEXT
+import { DataContext } from "../../context/dataContext";
+
 const Goal = (props) => {
     const { userList, setUserList } = useState(Data);
-    const [data, setData] = useState(props.data);
     const [sum, setSum] = useState(0);
     const [goal, setGoal] = useState(500);
     const [percentage, setPercentage] = useState(0);
@@ -12,9 +14,12 @@ const Goal = (props) => {
 
     const countRef = useRef();
 
+    //Context Data
+    const [data, setData] = useContext(DataContext);
+
     useEffect(() => {
         console.log(Data[0].donator.sum);
-        setSum(Data.map((e) => e.donator.sum).reduce((a, b) => a + b));
+        setSum(data.map((e) => e.donator.sum).reduce((a, b) => a + b));
     }, [data, userList]);
 
     useEffect(() => {
@@ -31,19 +36,19 @@ const Goal = (props) => {
 
     return (
         <>
-            <div className={`${props.klasse} relative`}>
+            <div className={`${props.klasse} relative font-sans`}>
                 <div className="headline font-bold text-base sm:text-xl mb-2 sm:mb-4">Erreichtes Ziel</div>
                 <div
                     className={` ${
                         percentage == 100 ? "font-bold" : ""
-                    } then absolute text-xs sm:text-base pt-2 sm:pt-4 top-0 right-0`}
+                    } then absolute text-xs sm:text-base pt-2 sm:pt-4 top-2 right-12`}
                 >
                     EUR {goal},-
                 </div>
 
                 <div className="balken border h-2 sm:h-4 w-full relative">
                     <motion.div
-                        className={`inner ${percentage == 100 ? "bg-[#FFD23F]" : "bg-black"}  h-full relative`}
+                        className={`inner ${percentage == 100 ? "bg-[#FFD23F]" : "bg-primaryColor"}  h-full relative`}
                         id="innerProgress"
                         layout
                         initial={{

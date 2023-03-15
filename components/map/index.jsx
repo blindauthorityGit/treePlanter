@@ -39,6 +39,9 @@ const DonationContent = dynamic(() => import("../../components/sidebarContent/do
     ssr: false,
 });
 
+// FUNCTIONS
+import getDistance from "../../functions/getDistance";
+
 function MapPage() {
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API;
     const [selectedMarker, setSelectedMarker] = useState(null);
@@ -48,11 +51,37 @@ function MapPage() {
     //Context Data
     const [data, setData] = useContext(DataContext);
 
+    //POPUP
+    const [popupOpen, setPopupOpen] = useState(false);
+
     //SIDEBAR
     const { toggleSidebar } = useContext(SidebarContext);
     const { isOpen, toggleSidebarRight } = useContext(PaymentContext);
     const [sidebarName, setSideBarName] = useState("");
     const [id, setID] = useState(0);
+
+    // MAP STUFF
+    const show3D = false;
+    const mapboxStyles = [
+        "mapbox://styles/mapbox/light-v11",
+        "mapbox://styles/mapbox/navigation-preview-day-v4",
+        "mapbox://styles/mapbox/navigation-preview-night-v4",
+        "mapbox://styles/mapbox/outdoors-v11",
+        "mapbox://styles/mapbox/satellite-v9",
+        "mapbox://styles/mapbox/satellite-streets-v11",
+        "mapbox://styles/mapbox/streets-v11",
+        "mapbox://styles/mapbox/streets-v10",
+        "mapbox://styles/mapbox/streets-navigation-preview-night-v4",
+        "mapbox://styles/mapbox/streets-navigation-preview-day-v4",
+        "mapbox://styles/mapbox/traffic-day-v2",
+        "mapbox://styles/mapbox/traffic-night-v2",
+        "mapbox://styles/mapbox/light-v10",
+        "mapbox://styles/mapbox/dark-v10",
+        "mapbox://styles/mapbox/satellite-hybrid-v9",
+        "mapbox://styles/mapbox/navigation-guidance-day-v4",
+        "mapbox://styles/mapbox/navigation-guidance-night-v4",
+    ];
+    const [styleIndex, setStyleIndex] = useState(0);
 
     function handleToggle() {
         setIsOpen(!isOpen);
@@ -67,7 +96,7 @@ function MapPage() {
 
         const map = new Map({
             container: mapContainer.current,
-            style: "mapbox://styles/mapbox/light-v11",
+            style: mapboxStyles[styleIndex],
             center: [13.388859, 52.517712],
             pitch: 45,
             zoom: 15.5,
@@ -104,6 +133,57 @@ function MapPage() {
                         dataID={marker.properties.id}
                     />
                 );
+            }
+
+            if (show3D) {
+                map.on("style.load", () => {
+                    // Insert the layer beneath any symbol layer.
+                    const layers = map.getStyle().layers;
+                    const labelLayerId = layers.find(
+                        (layer) => layer.type === "symbol" && layer.layout["text-field"]
+                    ).id;
+
+                    // The 'building' layer in the Mapbox Streets
+                    // vector tileset contains building height data
+                    // from OpenStreetMap.
+                    map.addLayer(
+                        {
+                            id: "add-3d-buildings",
+                            source: "composite",
+                            "source-layer": "building",
+                            filter: ["==", "extrude", "true"],
+                            type: "fill-extrusion",
+                            minzoom: 15,
+                            paint: {
+                                "fill-extrusion-color": "#aaa",
+
+                                // Use an 'interpolate' expression to
+                                // add a smooth transition effect to
+                                // the buildings as the user zooms in.
+                                "fill-extrusion-height": [
+                                    "interpolate",
+                                    ["linear"],
+                                    ["zoom"],
+                                    15,
+                                    0,
+                                    15.05,
+                                    ["get", "height"],
+                                ],
+                                "fill-extrusion-base": [
+                                    "interpolate",
+                                    ["linear"],
+                                    ["zoom"],
+                                    15,
+                                    0,
+                                    15.05,
+                                    ["get", "min_height"],
+                                ],
+                                "fill-extrusion-opacity": 0.6,
+                            },
+                        },
+                        labelLayerId
+                    );
+                });
             }
             // marker.properties.isClaimed
             //     ? (personalData = `<h1 class="text-2xl">Baum Nr.${i}</h1><p class="text-lg">${marker.donator.name}</p>`)
@@ -146,6 +226,8 @@ function MapPage() {
             setMapLoaded(map);
 
             popup.on("open", () => {
+                setPopupOpen(true);
+
                 const button = document.getElementById("myButton");
                 console.log(button);
                 if (button) {
@@ -160,6 +242,9 @@ function MapPage() {
                         popup.remove();
                     });
                 }
+            });
+            popup.on("close", () => {
+                setPopupOpen(false);
             });
         });
     }, [data]);
@@ -183,7 +268,7 @@ function MapPage() {
     return (
         <>
             <div
-                className="col-span-12 h-3/4 row-span-1"
+                className="col-span-12 h-calc row-span-1 mt-14"
                 style={{ gridRow: "1 / span 3" }}
                 id="map"
                 ref={mapContainer}
@@ -217,8 +302,21 @@ function MapPage() {
             <Sidebar2 onToggle={handleToggle}>
                 <DonationContent id={id}></DonationContent>
             </Sidebar2>
-            <div className="container p-16 col-span-12 row-start-2 row-end-2 mx-auto pt-6">
-                <Goal></Goal>
+            <div className="container grid grid-cols-12 p-16 col-span-12 row-start-2 row-end-2 mx-auto pt-6">
+                <div className="col-span-6 bg-white ">
+                    <Goal klasse="bg-white px-12 pb-10 pt-4 shadow"></Goal>
+                </div>
+                <div className="col-span-6 flex justify-end z-30 pt-8">
+                    <div
+                        className="w-2/4 h-16 rounded-xl flex justify-center items-center font-sans font-extrabold text-white text-xl bg-primaryColor"
+                        onClick={() => {
+                            toggleSidebar();
+                            setSideBarName("treeList");
+                        }}
+                    >
+                        SPENDEN
+                    </div>
+                </div>
             </div>
             {isOpen && <Overlay></Overlay>}
             <div className="container ">Powered by Sabocon, 2023</div>

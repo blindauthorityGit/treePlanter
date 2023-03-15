@@ -6,10 +6,14 @@ import Tree1 from "../../assets/trees/tree1.png";
 import Tree2 from "../../assets/trees/tree2.png";
 import Tree3 from "../../assets/trees/tree3.png";
 import Tree4 from "../../assets/trees/tree4.png";
+import { FiEyeOff } from "react-icons/fi";
 
 // STORE
 import { DataContext } from "../../context/dataContext";
 import { PaymentProvider, PaymentContext } from "../../context/paymentContext";
+
+//COMPONENTS
+import ImageUpload from "./imageUpload";
 
 function TreeDonationModal(props) {
     const [activeStep, setActiveStep] = useState(0);
@@ -55,8 +59,15 @@ function TreeDonationModal(props) {
     const [anonymousDonation, setAnonymousDonation] = useState(false);
     const [name, setName] = useState("");
     const [comment, setComment] = useState("");
-    const [treeIcon, setTreeIcon] = useState("");
+    const [treeIcon, setTreeIcon] = useState(0);
     const [receiptNeeded, setReceiptNeeded] = useState(false);
+
+    const treeIcons = [
+        { src: Tree1.src, alt: "Tree 1" },
+        { src: Tree2.src, alt: "Tree 2" },
+        { src: Tree3.src, alt: "Tree 3" },
+        { src: Tree4.src, alt: "Tree 4" },
+    ];
 
     const handleNextStep = () => {
         // Implement next step logic
@@ -81,6 +92,13 @@ function TreeDonationModal(props) {
 
     const handleDonationAmountChange = (event) => {
         setDonationAmount(event.target.value);
+    };
+
+    const handleDonationInputChange = (event) => {
+        const value = event.target.value;
+        if (value >= 0 && value <= 400) {
+            setDonationAmount(value);
+        }
     };
 
     const handleAnonymousDonationChange = (event) => {
@@ -117,6 +135,7 @@ function TreeDonationModal(props) {
             sum: donationAmount,
             location: tree,
             iconSize: getIconSizeString(treeIcon),
+            avatar: window.localStorage.getItem("image"),
         };
         console.log(formData);
         console.log(document.getElementById(`${id}`));
@@ -126,15 +145,16 @@ function TreeDonationModal(props) {
         console.log(formData);
         setData((prevState) => {
             const newData = [...prevState];
-            console.log(newData);
+            console.log(newData, formData.sum);
             data[id].properties.isClaimed = true;
             data[id].properties.iconSize = formData.iconSize;
             data[id].donator.name = formData.name;
-            data[id].donator.avatar = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+            data[id].donator.avatar = formData.avatar;
             data[id].donator.kommentar = formData.comment;
-            data[id].donator.sum = formData.sum;
+            data[id].donator.sum = Number(formData.sum);
             data[id].donator.tree = formData.tree;
             // newData[id] = formData;
+            console.log(newData);
             return newData;
         });
         toggleSidebarRight();
@@ -172,18 +192,28 @@ function TreeDonationModal(props) {
                             max="400"
                             value={donationAmount}
                             onChange={handleDonationAmountChange}
-                            className="w-64 h-2 bg-gray-400 rounded-full appearance-none focus:outline-none focus:bg-gray-500"
+                            className="w-full h-2 bg-gradient-to-r from-teal-400 to-teal-500 rounded-full appearance-none focus:outline-none"
                         />
-                        <label className="text-xl font-medium">{donationAmount}</label>
+                        <input
+                            type="number"
+                            min="0"
+                            max="400"
+                            value={`${donationAmount}`}
+                            onChange={handleDonationInputChange}
+                            className="w-16 text-center bg-gray-100 rounded-md focus:outline-none text-2xl font-medium text-gray-700"
+                        />
+                        {/* <label className="text-2xl font-medium text-gray-700">€{donationAmount}</label> */}
                     </div>
+
                     <br />
                     <div className="flex items-center space-x-2">
+                        <FiEyeOff className="inline-block text-gray-400" size={24} />
                         <input
                             id="anonymousDonation"
                             type="checkbox"
                             checked={anonymousDonation}
                             onChange={handleAnonymousDonationChange}
-                            className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                            className="w-8 h-8 text-primaryColor-600 border-gray-300 rounded focus:ring-primaryColor-500"
                         />
                         <label htmlFor="anonymousDonation" className="text-gray-700 font-sans cursor-pointer">
                             Anonyme Spende?
@@ -196,27 +226,28 @@ function TreeDonationModal(props) {
             title: "Ihre Daten",
             content: (
                 <div className="grid grid-cols-2 gap-4 mt-6 mb-12 font-sans">
-                    <label htmlFor="name" className="font-bold">
+                    <label htmlFor="name" className="font-bold col-span-12">
                         Name:
                     </label>
                     <input
                         id="name"
                         type="text"
-                        className="px-2 py-1 border border-gray-400 rounded"
+                        className="px-2 py-1 border border-gray-400 rounded col-span-12"
                         value={name}
                         onChange={handleNameChange}
                     />
 
-                    <label htmlFor="comment" className="font-bold">
+                    <label htmlFor="comment" className="font-bold col-span-12">
                         Kommentar (optional, max 140 Zeichen):
                     </label>
                     <textarea
                         id="comment"
                         maxLength="140"
-                        className="px-2 py-1 border border-gray-400 rounded"
+                        className="px-2 py-1 border col-span-12 border-gray-400 rounded"
                         value={comment}
                         onChange={handleCommentChange}
                     ></textarea>
+                    <ImageUpload />
                 </div>
             ),
         },
@@ -259,19 +290,31 @@ function TreeDonationModal(props) {
             title: "Zusammenfassung",
             content: (
                 <>
-                    <p className=" font-bold mb-2">{tree}</p>
-                    <p className="mb-2">{`Spendensumme: ${donationAmount}`}</p>
-                    <p className="mb-2">{`Name: ${name}`}</p>
-                    <p className="mb-2">{`Kommentar: ${comment}`}</p>
-                    <p className="mb-2">{`Baum: ${treeIcon}`}</p>
-                    <div className="flex items-center mb-4">
-                        <input
-                            type="checkbox"
-                            checked={receiptNeeded}
-                            onChange={handleReceiptNeededChange}
-                            className="mr-2"
-                        />
-                        <label>Quittung benötigt</label>
+                    <p className=" font-bold mb-4 mt-6">{tree}</p>
+                    <div className="grid grid-cols-12 gap-4">
+                        <p className="col-span-4 font-bold mb-2">Baum:</p>
+                        <div className="col-span-8 flex items-center">
+                            <img className="h-16" src={treeIcons[treeIcon].src} alt="" />
+                        </div>
+
+                        <p className="col-span-4 mb-2">Spendensumme:</p>
+                        <p className="col-span-8 mb-2">EUR {donationAmount},-</p>
+
+                        <p className="col-span-4 mb-2">Name:</p>
+                        <p className="col-span-8 mb-2">{name}</p>
+
+                        <p className="col-span-4 mb-2">Kommentar:</p>
+                        <p className="col-span-8 mb-2">{comment}</p>
+
+                        <div className="col-span-12 flex items-center mb-4">
+                            <input
+                                type="checkbox"
+                                checked={receiptNeeded}
+                                onChange={handleReceiptNeededChange}
+                                className="mr-2"
+                            />
+                            <label>Quittung benötigt</label>
+                        </div>
                     </div>
                 </>
             ),
@@ -286,10 +329,10 @@ function TreeDonationModal(props) {
             <div>
                 <h3 className="font-sans text-lg font-semibold mt-6">{steps[activeStep].title}</h3>
                 <div>{steps[activeStep].content}</div>
-                <div>
+                <div className="grid grid-cols-12 gap-8 mt-8">
                     {activeStep > 0 && (
                         <button
-                            className="bg-primaryColor-700 font-sans myButton z-30 mt-6 font-semibold hover-underline-animation z-20 flex items-center justify-center text-white lg:mt-8 py-2 text-sm sm:text-base sm:py-3 px-6 min-w-[10rem] w-full uppercase rounded-md md:mt-8"
+                            className="bg-primaryColor-700 col-span-12 sm:col-span-6 font-sans myButton z-30 mt-6 font-semibold hover-underline-animation z-20 flex items-center justify-center text-white lg:mt-8 py-2 text-sm sm:text-base sm:py-3 px-6 min-w-[10rem] w-full uppercase rounded-md md:mt-8"
                             onClick={handlePreviousStep}
                         >
                             Zurück
@@ -297,14 +340,14 @@ function TreeDonationModal(props) {
                     )}
                     {activeStep < steps.length - 1 ? (
                         <button
-                            className="bg-primaryColor font-sans myButton z-30 mt-6 font-semibold hover-underline-animation z-20 flex items-center justify-center text-white lg:mt-8 py-2 text-sm sm:text-base sm:py-3 px-6 min-w-[10rem] w-full uppercase rounded-md md:mt-8"
+                            className="bg-primaryColor col-span-12 sm:col-span-6 font-sans myButton z-30 mt-6 font-semibold hover-underline-animation z-20 flex items-center justify-center text-white lg:mt-8 py-2 text-sm sm:text-base sm:py-3 px-6 min-w-[10rem] w-full uppercase rounded-md md:mt-8"
                             onClick={handleNextStep}
                         >
                             Weiter
                         </button>
                     ) : (
                         <button
-                            className="bg-primaryColor font-sans myButton z-30 mt-6 font-semibold hover-underline-animation z-20 flex items-center justify-center text-white lg:mt-8 py-2 text-sm sm:text-base sm:py-3 px-6 min-w-[10rem] w-full uppercase rounded-md md:mt-8"
+                            className="bg-primaryColor col-span-12 sm:col-span-6 font-sans myButton z-30 mt-6 font-semibold hover-underline-animation z-20 flex items-center justify-center text-white lg:mt-8 py-2 text-sm sm:text-base sm:py-3 px-6 min-w-[10rem] w-full uppercase rounded-md md:mt-8"
                             onClick={handlePayment}
                         >
                             Pay

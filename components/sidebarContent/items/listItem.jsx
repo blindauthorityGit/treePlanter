@@ -6,7 +6,7 @@ function ListItem(props, ref) {
         <>
             <div
                 data-id={props.e.properties.id}
-                className="wrapper hover:bg-primaryColor-200 p-2 cursor-pointer listItem w-full flex items-center mt-2 mb-4  relative "
+                className="wrapper hover:bg-primaryColor-50 p-2 cursor-pointer listItem w-full flex items-center mt-2 mb-4  relative "
                 onMouseOver={(e) => {
                     props.onHover(e);
                 }}
@@ -47,7 +47,7 @@ function ListItem(props, ref) {
                     )}
                 </div>
                 {props.e.donator.kommentar && (
-                    <div className="farRight comment hidden lg:block text-xs border p-2 lg:p-4 bg-[#dcdfdc]">
+                    <div className="farRight comment hidden lg:block text-xs border p-2 lg:p-4 bg-primaryColor-300">
                         {props.e.donator.kommentar}
                     </div>
                 )}{" "}
