@@ -217,7 +217,7 @@ const data = [
         donator: {
             name: "Johannes Buchner",
             sum: 25,
-            avatar: "https://randomuser.me/api/portraits/men/20.jpg",
+            avatar: "",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 0,
         },
