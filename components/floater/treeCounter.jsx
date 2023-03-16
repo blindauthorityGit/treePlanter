@@ -12,14 +12,14 @@ const TreeCounter = ({ trees }) => {
                 stiffness: 260,
                 damping: 20,
             }}
-            className="absolute font-sans z-20 top-0 font-bold left-0 w-full py-4 bg-primaryColor-300 text-white text-center"
+            className="absolute font-sans z-20 top-0 font-bold left-0 w-full py-4 sm:py-4 bg-primaryColor-300 text-white text-center"
         >
             <div className="container mx-auto grid grid-cols-12 px-6 sm:px-0">
                 <div className="col-span-6 sm:col-span-4 relative">
-                    <img className="h-8 absolute" src={Logo.src} alt="" />
+                    <img className="h-6 sm:h-8 absolute" src={Logo.src} alt="" />
                 </div>
                 <div className="col-span-6 sm:col-span-4 text-sm sm:text-lg"> Gepflanzte Bäume: {trees}</div>
-                <div className="sm:col-span-4 flex justify-end text-right w-full">
+                <div className="hidden sm:flex sm:col-span-4  justify-end text-right w-full">
                     <BsFacebook className="mr-4" />
                     <BsInstagram className="mr-4" />
                     <BsTwitter className="mr-4" />

@@ -131,3 +131,4 @@ The toggleSidebar() function removes this class from the element in order to exp
 .mapboxgl-popup.open {
   opacity: 1;
 }
+

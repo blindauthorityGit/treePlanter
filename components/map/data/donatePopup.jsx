@@ -21,7 +21,7 @@ const DonatePopup = (props) => {
         props.onClick(e);
     };
     return (
-        <div className="font-sans p-6">
+        <div className="font-sans p-2 sm:p-6">
             <h1 class="text-2xl font-bold mb-4">Baum Nr.{props.id}</h1>
             <div className="grid grid-cols-12">
                 <p>{address}</p>

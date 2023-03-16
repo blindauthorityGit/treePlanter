@@ -37,7 +37,7 @@ const Goal = (props) => {
     return (
         <>
             <div className={`${props.klasse} relative font-sans`}>
-                <div className="headline font-bold text-base sm:text-xl mb-2 sm:mb-4">Erreichtes Ziel</div>
+                <div className="headline font-bold text-xs sm:text-xl mb-2 sm:mb-4">Erreichtes Ziel</div>
                 <div
                     className={` ${
                         percentage == 100 ? "font-bold" : ""

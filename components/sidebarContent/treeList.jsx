@@ -94,7 +94,7 @@ const TreeList = (props) => {
     return (
         <MainContainer noGap width="fixed relative h-full ">
             <div className="col-span-12 md:p-16 sm:pt-0">
-                <h2 className="font-sans text-3xl font-bold text-primaryColor-900 uppercase">
+                <h2 className="font-sans text-lg sm:text-3xl font-bold text-primaryColor-900 uppercase">
                     Diese Plätze warten auf Ihre Bäume
                 </h2>
                 <hr className="mb-8" />

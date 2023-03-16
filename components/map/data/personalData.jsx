@@ -6,7 +6,7 @@ const PersonalData = (props) => {
             <h1 class="text-2xl font-bold mb-4">Baum Nr.{props.id}</h1>
             <div className="grid grid-cols-12">
                 <div
-                    className="col-span-3 rounded-full cursor-pointer"
+                    className="col-span-4 sm:col-span-3 rounded-full cursor-pointer"
                     onClick={() => {
                         console.log("clicked");
                     }}
@@ -16,7 +16,7 @@ const PersonalData = (props) => {
                         style={{ backgroundImage: `url(${props.image})` }}
                     ></div>
                 </div>
-                <div className="col-span-9">
+                <div className="col-span-8 sm:col-span-9">
                     <p class="text-xs sm:text-sm font-semibold">{props.name}</p>
                     <p class="text-xs sm:text-sm">Spende: € {props.sum},-</p>
                 </div>

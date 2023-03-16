@@ -41,6 +41,7 @@ const DonationContent = dynamic(() => import("../../components/sidebarContent/do
 
 // FUNCTIONS
 import getDistance from "../../functions/getDistance";
+import { useBreakpoints } from "../../functions/useBreakpoints";
 
 function MapPage() {
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API;
@@ -91,6 +92,8 @@ function MapPage() {
         setIsOpen(!isOpen);
     }
 
+    const { isMobile, isTablet, isDesktop } = useBreakpoints();
+
     const mapContainer = useRef(null);
     // const rightRef = useRef(null);
     // const modalRef = useRef(new mapboxgl.Popup({ offset: 15 }));
@@ -121,6 +124,7 @@ function MapPage() {
     }, [styleIndex]);
 
     useEffect(() => {
+        console.log(isMobile, isTablet, isDesktop);
         // Initialize map
         if (map) {
             map.addControl(
@@ -211,7 +215,9 @@ function MapPage() {
                 // Create a unique identifier for the popup
                 const popupId = `popup-${i}`;
 
-                const popup = new mapboxgl.Popup({ offset: 25, maxWidth: "300px" }).setHTML(personalData);
+                const popup = new mapboxgl.Popup({ offset: 25, maxWidth: isMobile ? "220px" : "300px" }).setHTML(
+                    personalData
+                );
                 popups[popupId] = popup;
                 console.log(popups);
                 const el = document.createElement("div");
@@ -275,7 +281,7 @@ function MapPage() {
                 });
             });
         }
-    }, [data, map]);
+    }, [data, map, isMobile, isTablet, isDesktop]);
     function openPopup(popupId) {
         console.log(popups);
         // Find the popup with the specified ID and open it
@@ -338,6 +344,7 @@ function MapPage() {
                         onClick={(e) => {
                             handleFlyToLocation(Data[e.currentTarget.dataset.id].geometry.coordinates);
                             console.log(Data[e.currentTarget.dataset.id].properties.id);
+                            isMobile ? toggleSidebar() : console.log("NET MOBILE");
                             openPopup(`popup-${Data[e.currentTarget.dataset.id].properties.id}`);
                         }}
                     ></TreeList>
@@ -348,7 +355,7 @@ function MapPage() {
             </Sidebar2>
             <div className="container grid grid-cols-12 p-8 sm:p-16 col-span-12 row-start-2 row-end-2 mx-auto pt-6">
                 <div className="col-span-12 sm:col-span-6 bg-white ">
-                    <Goal klasse="bg-white px-12 pb-10 pt-4 shadow"></Goal>
+                    <Goal klasse="bg-white px-12 pb-6 sm:pb-10 pt-2 sm:pt-4 shadow"></Goal>
                 </div>
                 <div className="col-span-12 sm:col-span-6 flex justify-end z-30 pt-8">
                     <div
