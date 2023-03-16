@@ -22,7 +22,7 @@ const DonatePopup = (props) => {
     };
     return (
         <div className="font-sans p-2 sm:p-6">
-            <h1 class="text-2xl font-bold mb-4">Baum Nr.{props.id}</h1>
+            <h1 class="text-lg sm:text-2xl font-bold mb-4">Baum Nr.{props.id}</h1>
             <div className="grid grid-cols-12">
                 <p>{address}</p>
                 <p class="sm:text-lg col-span-12 text-xs">Mit Ihrer Spende können Sie hier einen Baum pflanzen!</p>
