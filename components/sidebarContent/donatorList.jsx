@@ -5,7 +5,7 @@ import ListItem from "./items/listItem";
 import Data from "../map/data";
 
 const DonatorList = (props) => {
-    const [itemsAll, setItemsAll] = useState(Data);
+    const [itemsAll, setItemsAll] = useState(Data.filter((e) => e.properties.isClaimed));
     const [items, setItems] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
 
@@ -30,7 +30,7 @@ const DonatorList = (props) => {
         return { innerWidth, innerHeight };
     }
 
-    const itemsPerPage = Math.floor(windowSize.innerHeight / 115);
+    const itemsPerPage = Math.floor(windowSize.innerHeight / 76);
     // const itemsPerPage = windowSize.innerHeight <= 640 ? 4 : 8;
 
     function sliceIntoChunks(arr, chunkSize) {

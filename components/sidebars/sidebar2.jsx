@@ -7,7 +7,7 @@ const Sidebar2 = (props) => {
 
     return (
         <div
-            className={` top-0 right-0  md:w-3/4 lg:w-1/3 z-50 h-full bg-gray-100 transition-transform duration-300 transform ${
+            className={` top-0 right-0  md:w-3/4 lg:w-1/3 z-50 h-full bg-gray-50 transition-transform duration-300 transform ${
                 isOpen ? "translate-x-0 fixed sm:fixed" : "fixed translate-x-full"
             }`}
         >

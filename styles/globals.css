@@ -125,7 +125,7 @@ The toggleSidebar() function removes this class from the element in order to exp
 }
 
 .mapboxgl-popup {
-  transition: all 0.08s ease-in-out;
+  /* transition: all 0.08s ease-in-out; */
 }
 
 .mapboxgl-popup.open {

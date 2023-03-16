@@ -51,11 +51,15 @@ function MapPage() {
     //Context Data
     const [data, setData] = useContext(DataContext);
 
+    //REFS
+    const mainBtnRef = useRef(null);
+
     //POPUP
     const [popupOpen, setPopupOpen] = useState(false);
 
     //SIDEBAR
     const { toggleSidebar } = useContext(SidebarContext);
+    const [leftOpen, setLeftOpen] = useState(false);
     const { isOpen, toggleSidebarRight } = useContext(PaymentContext);
     const [sidebarName, setSideBarName] = useState("");
     const [id, setID] = useState(0);
@@ -91,10 +95,17 @@ function MapPage() {
     // const rightRef = useRef(null);
     // const modalRef = useRef(new mapboxgl.Popup({ offset: 15 }));
 
-    useEffect(() => {
-        // Initialize map
+    //POPUPS
+    // Create a dictionary to store popups
+    const [popups, setPopups] = useState({});
 
-        const map = new Map({
+    const [map, setMap] = useState(null); // <-- declare map as state variable
+
+    useEffect(() => {
+        // ...other code...
+
+        // Initialize map
+        const mapObj = new Map({
             container: mapContainer.current,
             style: mapboxStyles[styleIndex],
             center: [13.388859, 52.517712],
@@ -104,36 +115,20 @@ function MapPage() {
             antialias: true,
         });
 
-        map.addControl(
-            new mapboxgl.NavigationControl({
-                visualizePitch: true,
-                showZoom: true,
-            })
-        );
+        // ...other code...
 
-        data.map((marker, i) => {
-            // Create a DOM element for each marker.
-            let personalData = "";
-            if (marker.properties.isClaimed) {
-                personalData = ReactDOMServer.renderToString(
-                    <PersonalData
-                        id={marker.properties.id}
-                        name={marker.donator.name}
-                        image={marker.donator.avatar}
-                        sum={marker.donator.sum}
-                        kommentar={marker.donator.kommentar}
-                        dataID={marker.properties.id}
-                    />
-                );
-            } else if (!marker.properties.isClaimed) {
-                personalData = ReactDOMServer.renderToString(
-                    <DonatePopup
-                        id={marker.properties.id}
-                        coordinates={marker.geometry.coordinates}
-                        dataID={marker.properties.id}
-                    />
-                );
-            }
+        setMap(mapObj); // <-- set map to the state variable
+    }, [styleIndex]);
+
+    useEffect(() => {
+        // Initialize map
+        if (map) {
+            map.addControl(
+                new mapboxgl.NavigationControl({
+                    visualizePitch: true,
+                    showZoom: true,
+                })
+            );
 
             if (show3D) {
                 map.on("style.load", () => {
@@ -185,70 +180,116 @@ function MapPage() {
                     );
                 });
             }
-            // marker.properties.isClaimed
-            //     ? (personalData = `<h1 class="text-2xl">Baum Nr.${i}</h1><p class="text-lg">${marker.donator.name}</p>`)
-            //     : "";
 
-            const popup = new mapboxgl.Popup({ offset: 25, maxWidth: "300px" }).setHTML(personalData);
-            const el = document.createElement("div");
-            const width = marker.properties.iconSize[0];
-            const height = marker.properties.iconSize[1];
-            (el.id = marker.properties.id), (el.className = "marker");
-            marker.properties.isClaimed
-                ? (() => {
-                      switch (marker.donator.tree) {
-                          case 0:
-                              return (el.style.backgroundImage = `url(${Tree1.src})`);
-                          case 1:
-                              return (el.style.backgroundImage = `url(${Tree2.src})`);
-                          case 2:
-                              return (el.style.backgroundImage = `url(${Tree3.src})`);
-                          case 3:
-                              return (el.style.backgroundImage = `url(${Tree4.src})`);
-                          default:
-                              return (el.style.backgroundImage = `url(${Tree1Claimed.src})`);
-                      }
-                  })()
-                : (el.style.backgroundImage = `url(${Tree1Unclaimed.src})`);
-            el.style.width = `${width}px`;
-            el.style.height = `${height}px`;
-            el.style.backgroundSize = "100%";
-            el.classList.add("transition-all", "hover:scale-110");
-
-            el.addEventListener("click", (e) => {
-                console.log(e.target);
-            });
-
-            // Add markers to the map.
-            marker.properties.isClaimed
-                ? new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).setPopup(popup).addTo(map)
-                : new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).setPopup(popup).addTo(map);
-            setMapLoaded(map);
-
-            popup.on("open", () => {
-                setPopupOpen(true);
-
-                const button = document.getElementById("myButton");
-                console.log(button);
-                if (button) {
-                    button.addEventListener("click", (e) => {
-                        toggleSidebarRight();
-                        const index = e.currentTarget.dataset.id;
-                        setID(index);
-                        const coordinates = Data[index].geometry.coordinates;
-                        console.log(index, e.currentTarget);
-                        console.log(e.currentTarget.dataset.id, Data[index].geometry.coordinates);
-                        setFlyToLocation(coordinates);
-                        popup.remove();
-                    });
+            data.map((marker, i) => {
+                // Create a DOM element for each marker.
+                let personalData = "";
+                if (marker.properties.isClaimed) {
+                    personalData = ReactDOMServer.renderToString(
+                        <PersonalData
+                            id={marker.properties.id}
+                            name={marker.donator.name}
+                            image={marker.donator.avatar}
+                            sum={marker.donator.sum}
+                            kommentar={marker.donator.kommentar}
+                            dataID={marker.properties.id}
+                        />
+                    );
+                } else if (!marker.properties.isClaimed) {
+                    personalData = ReactDOMServer.renderToString(
+                        <DonatePopup
+                            id={marker.properties.id}
+                            coordinates={marker.geometry.coordinates}
+                            dataID={marker.properties.id}
+                        />
+                    );
                 }
-            });
-            popup.on("close", () => {
-                setPopupOpen(false);
-            });
-        });
-    }, [data]);
 
+                // marker.properties.isClaimed
+                //     ? (personalData = `<h1 class="text-2xl">Baum Nr.${i}</h1><p class="text-lg">${marker.donator.name}</p>`)
+                //     : "";
+                // Create a unique identifier for the popup
+                const popupId = `popup-${i}`;
+
+                const popup = new mapboxgl.Popup({ offset: 25, maxWidth: "300px" }).setHTML(personalData);
+                popups[popupId] = popup;
+                console.log(popups);
+                const el = document.createElement("div");
+                const width = marker.properties.iconSize[0];
+                const height = marker.properties.iconSize[1];
+                (el.id = marker.properties.id), (el.className = "marker");
+                marker.properties.isClaimed
+                    ? (() => {
+                          switch (marker.donator.tree) {
+                              case 0:
+                                  return (el.style.backgroundImage = `url(${Tree1.src})`);
+                              case 1:
+                                  return (el.style.backgroundImage = `url(${Tree2.src})`);
+                              case 2:
+                                  return (el.style.backgroundImage = `url(${Tree3.src})`);
+                              case 3:
+                                  return (el.style.backgroundImage = `url(${Tree4.src})`);
+                              default:
+                                  return (el.style.backgroundImage = `url(${Tree1Claimed.src})`);
+                          }
+                      })()
+                    : (el.style.backgroundImage = `url(${Tree1Unclaimed.src})`);
+                el.style.width = `${width}px`;
+                el.style.height = `${height}px`;
+                el.style.backgroundSize = "100%";
+                el.classList.add("transition-all", "hover:scale-110");
+
+                el.addEventListener("click", (e) => {
+                    console.log(e.target);
+                });
+
+                // Add markers to the map.
+                marker.properties.isClaimed
+                    ? new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).setPopup(popup).addTo(map)
+                    : new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).setPopup(popup).addTo(map);
+                setMapLoaded(map);
+
+                popup.on("open", () => {
+                    setPopupOpen(true);
+
+                    const button = document.getElementById("myButton");
+                    console.log(button);
+                    if (button) {
+                        button.addEventListener("click", (e) => {
+                            toggleSidebarRight();
+                            const index = e.currentTarget.dataset.id;
+                            setID(index);
+                            const coordinates = Data[index].geometry.coordinates;
+                            console.log(index, e.currentTarget);
+                            console.log(e.currentTarget.dataset.id, Data[index].geometry.coordinates);
+                            setFlyToLocation(coordinates);
+                            popup.remove();
+                        });
+                    }
+                });
+                popup.on("close", () => {
+                    setPopupOpen(false);
+                });
+                map.on("closeAllPopups", () => {
+                    popup.remove();
+                });
+            });
+        }
+    }, [data, map]);
+    function openPopup(popupId) {
+        console.log(popups);
+        // Find the popup with the specified ID and open it
+        map.fire("closeAllPopups");
+
+        const popup = popups[popupId];
+        console.log(popups, popupId, popups["popup-0"]);
+        if (popup) {
+            popup.addTo(map);
+            // setTimeout(() => {
+            //     popup.remove();
+            // }, 1000);
+        }
+    }
     useEffect(() => {
         if (mapLoaded && flyToLocation) {
             console.log(flyToLocation);
@@ -277,6 +318,7 @@ function MapPage() {
                 onClickTree={() => {
                     toggleSidebar();
                     setSideBarName("treeList");
+                    setLeftOpen(!leftOpen);
                 }}
                 onClickDonator={() => {
                     toggleSidebar();
@@ -295,6 +337,8 @@ function MapPage() {
                     <TreeList
                         onClick={(e) => {
                             handleFlyToLocation(Data[e.currentTarget.dataset.id].geometry.coordinates);
+                            console.log(Data[e.currentTarget.dataset.id].properties.id);
+                            openPopup(`popup-${Data[e.currentTarget.dataset.id].properties.id}`);
                         }}
                     ></TreeList>
                 )}
@@ -302,15 +346,19 @@ function MapPage() {
             <Sidebar2 onToggle={handleToggle}>
                 <DonationContent id={id}></DonationContent>
             </Sidebar2>
-            <div className="container grid grid-cols-12 p-16 col-span-12 row-start-2 row-end-2 mx-auto pt-6">
-                <div className="col-span-6 bg-white ">
+            <div className="container grid grid-cols-12 p-8 sm:p-16 col-span-12 row-start-2 row-end-2 mx-auto pt-6">
+                <div className="col-span-12 sm:col-span-6 bg-white ">
                     <Goal klasse="bg-white px-12 pb-10 pt-4 shadow"></Goal>
                 </div>
-                <div className="col-span-6 flex justify-end z-30 pt-8">
+                <div className="col-span-12 sm:col-span-6 flex justify-end z-30 pt-8">
                     <div
-                        className="w-2/4 h-16 rounded-xl flex justify-center items-center font-sans font-extrabold text-white text-xl bg-primaryColor"
+                        ref={mainBtnRef}
+                        className={`${
+                            sidebarName === "treeList" ? "bg-primaryColor-800" : ""
+                        } cursor-pointer hover:bg-primaryColor-700 transition-all w-full sm:w-2/4 h-12 sm:h-16 rounded-xl flex justify-center items-center font-sans font-extrabold text-white text-base sm:text-xl bg-primaryColor-800`}
                         onClick={() => {
                             toggleSidebar();
+                            setLeftOpen(!leftOpen);
                             setSideBarName("treeList");
                         }}
                     >

@@ -322,7 +322,7 @@ function TreeDonationModal(props) {
     ];
 
     return (
-        <div className="p-8 sm:p-16 bg-gray-100">
+        <div className="p-8 sm:p-16 bg-gray-50">
             <h2 className="font-sans text-3xl uppercase font-bold mb-12">
                 Helfen Sie uns, <span className="text-primaryColor-600">grüner</span> zu werden
             </h2>

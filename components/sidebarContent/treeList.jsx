@@ -3,15 +3,23 @@ import MainContainer from "../layout/mainContainer";
 import ReactPaginate from "react-paginate";
 import TreeListItem from "./items/treeListItem";
 import Data from "../map/data";
+import { GiConvergenceTarget } from "react-icons/gi";
+
+// FUNCTIONS
+import { getUserLocation } from "../../functions/getUserLocation";
+import filterByDistance from "../../functions/filterByDistance";
 
 const TreeList = (props) => {
-    const [itemsAll, setItemsAll] = useState(Data);
+    const [itemsAll, setItemsAll] = useState(Data.filter((e) => !e.properties.isClaimed));
     const [items, setItems] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
 
     const [windowSize, setWindowSize] = useState(getWindowSize());
 
     const listRef = useRef();
+
+    //LOCATION
+    const [location, setLocation] = useState(null);
 
     useEffect(() => {
         function handleWindowResize() {
@@ -25,12 +33,33 @@ const TreeList = (props) => {
             window.removeEventListener("resize", handleWindowResize);
         };
     }, []);
+
+    useEffect(() => {
+        console.log(location);
+    }, [location]);
+
+    //& GET USER LOCATION
+    function getLocation() {
+        const onlyUnclaimed = Data.filter((e) => !e.properties.isClaimed);
+        const coords = onlyUnclaimed.map((e) => e.geometry.coordinates);
+        getUserLocation()
+            .then((location) => {
+                setLocation(location);
+                return location;
+            })
+            .then((location) => {
+                console.log(coords, Object.values(location), 1);
+                filterByDistance(coords, Object.values(location), 6000);
+            })
+            .catch((error) => console.error(error));
+    }
+
     function getWindowSize() {
         const { innerWidth, innerHeight } = window;
         return { innerWidth, innerHeight };
     }
 
-    const itemsPerPage = Math.floor(windowSize.innerHeight / 115);
+    const itemsPerPage = windowSize.innerHeight <= 844 ? 6 : Math.floor(windowSize.innerHeight / 76);
     // const itemsPerPage = windowSize.innerHeight <= 640 ? 4 : 8;
 
     function sliceIntoChunks(arr, chunkSize) {
@@ -47,7 +76,7 @@ const TreeList = (props) => {
     };
 
     useEffect(() => {
-        console.log(">Data");
+        console.log(itemsAll.length);
     });
 
     useEffect(() => {
@@ -69,10 +98,10 @@ const TreeList = (props) => {
                     Diese Plätze warten auf Ihre Bäume
                 </h2>
                 <hr className="mb-8" />
+
                 {items && (
                     <>
                         {items[currentPage].map((e, i) => {
-                            console.log(e);
                             if (i < itemsPerPage && !e.properties.isClaimed) {
                                 return (
                                     <TreeListItem

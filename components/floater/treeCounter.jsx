@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
-import Logo from "../../assets/SVG/logowhite.svg";
+// import Logo from "../../assets/SVG/logowhite.svg";
+import Logo from "../../assets/logoNeu.png";
+import { BsFacebook, BsInstagram, BsTwitter, BsInfoCircleFill } from "react-icons/bs";
 const TreeCounter = ({ trees }) => {
     return (
         <motion.div
@@ -12,12 +14,17 @@ const TreeCounter = ({ trees }) => {
             }}
             className="absolute font-sans z-20 top-0 font-bold left-0 w-full py-4 bg-primaryColor-300 text-white text-center"
         >
-            <div className="container mx-auto grid grid-cols-12">
-                <div className="col-span-4 relative">
+            <div className="container mx-auto grid grid-cols-12 px-6 sm:px-0">
+                <div className="col-span-6 sm:col-span-4 relative">
                     <img className="h-8 absolute" src={Logo.src} alt="" />
                 </div>
-                <div className="col-span-4"> Gepflanzte Bäume: {trees}</div>
-                <div className="col-span-4">INFOS</div>
+                <div className="col-span-6 sm:col-span-4 text-sm sm:text-lg"> Gepflanzte Bäume: {trees}</div>
+                <div className="sm:col-span-4 flex justify-end text-right w-full">
+                    <BsFacebook className="mr-4" />
+                    <BsInstagram className="mr-4" />
+                    <BsTwitter className="mr-4" />
+                    <BsInfoCircleFill />
+                </div>
             </div>
         </motion.div>
     );

@@ -222,6 +222,137 @@ const data = [
             tree: 0,
         },
     },
+    {
+        type: "Feature",
+        properties: {
+            message: "Garply",
+            id: 10,
+            isClaimed: false,
+            icon: "tree2",
+            iconSize: [50, 100],
+        },
+        geometry: {
+            type: "Point",
+            coordinates: [13.405602, 52.520853],
+        },
+        donator: {
+            name: "",
+            sum: 0,
+            avatar: "",
+            kommentar: "",
+            tree: "",
+        },
+    },
+
+    {
+        type: "Feature",
+        properties: {
+            message: "Garply",
+            id: 11,
+            isClaimed: false,
+            icon: "tree3",
+            iconSize: [50, 100],
+        },
+        geometry: {
+            type: "Point",
+            coordinates: [13.406621, 52.52135],
+        },
+        donator: {
+            name: "",
+            sum: 0,
+            avatar: "",
+            kommentar: "",
+            tree: "",
+        },
+    },
+
+    {
+        type: "Feature",
+        properties: {
+            message: "Garply",
+            id: 12,
+            isClaimed: false,
+            icon: "tree1",
+            iconSize: [50, 100],
+        },
+        geometry: {
+            type: "Point",
+            coordinates: [13.40742, 52.521503],
+        },
+        donator: {
+            name: "",
+            sum: 0,
+            avatar: "",
+            kommentar: "",
+            tree: "",
+        },
+    },
+
+    {
+        type: "Feature",
+        properties: {
+            message: "Garply",
+            id: 13,
+            isClaimed: false,
+            icon: "tree4",
+            iconSize: [50, 100],
+        },
+        geometry: {
+            type: "Point",
+            coordinates: [13.407744, 52.520626],
+        },
+        donator: {
+            name: "",
+            sum: 0,
+            avatar: "",
+            kommentar: "",
+            tree: "",
+        },
+    },
+
+    {
+        type: "Feature",
+        properties: {
+            message: "Garply",
+            id: 14,
+            isClaimed: false,
+            icon: "tree2",
+            iconSize: [50, 100],
+        },
+        geometry: {
+            type: "Point",
+            coordinates: [13.406704, 52.52024],
+        },
+        donator: {
+            name: "",
+            sum: 0,
+            avatar: "",
+            kommentar: "",
+            tree: "",
+        },
+    },
+
+    {
+        type: "Feature",
+        properties: {
+            message: "Garply",
+            id: 15,
+            isClaimed: false,
+            icon: "tree3",
+            iconSize: [50, 100],
+        },
+        geometry: {
+            type: "Point",
+            coordinates: [13.405683, 52.519743],
+        },
+        donator: {
+            name: "",
+            sum: 0,
+            avatar: "",
+            kommentar: "",
+            tree: "",
+        },
+    },
 ];
 
 data.map((e, i) => {
