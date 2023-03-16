@@ -127,12 +127,12 @@ function MapPage() {
         console.log(isMobile, isTablet, isDesktop);
         // Initialize map
         if (map) {
-            map.addControl(
-                new mapboxgl.NavigationControl({
-                    visualizePitch: true,
-                    showZoom: true,
-                })
-            );
+            // map.addControl(
+            //     new mapboxgl.NavigationControl({
+            //         visualizePitch: true,
+            //         showZoom: true,
+            //     })
+            // );
 
             if (show3D) {
                 map.on("style.load", () => {
