@@ -68,7 +68,7 @@ function ImageUpload(props) {
     // }, [images]);
 
     return (
-        <div className="name grid grid-cols-12 mt-6 col-span-12">
+        <div className="name grid grid-cols-12 mt-2 sm:mt-6 col-span-12">
             <div className="col-span-2 flex items-center">
                 <div data-tip={props.dataTip} className="text-5xl font-black opacity-50">
                     <MdPhotoCamera />{" "}

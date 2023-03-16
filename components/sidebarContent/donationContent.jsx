@@ -165,13 +165,13 @@ function TreeDonationModal(props) {
             title: "Mit Ihrer Spende können Sie an der angegebenen Adresse einen Baum pflanzen lassen!",
             content: (
                 <>
-                    <p className="font-sans  mt-4">
+                    <p className="font-sans text-sm sm:text-base  mt-4">
                         Wählen Sie eine beliebige Summe und helfen Sie uns die Stadt grüner werden zu lassen.
                     </p>
-                    <p className="font-sans  mt-4">
+                    <p className="font-sans text-sm sm:text-base  mt-4">
                         Ihre Spende wird mit einer Plakette am Baum und einem Eintrag in unserer Spenderliste geehrt.
                     </p>
-                    <div className="grid grid-cols-12 text-lg font-sans font-semibold my-12">
+                    <div className="grid grid-cols-12 text-sm sm:text-lg font-sans font-semibold my-12">
                         <div className="col-span-4">Baum Nr.{id}</div>
                         <div className="col-span-8">
                             {" "}
@@ -225,7 +225,7 @@ function TreeDonationModal(props) {
         {
             title: "Ihre Daten",
             content: (
-                <div className="grid grid-cols-2 gap-4 mt-6 mb-12 font-sans">
+                <div className="grid grid-cols-2 gap-4 mt-6 mb-6 text-xs sm:text-base sm:mb-12 font-sans">
                     <label htmlFor="name" className="font-bold col-span-12">
                         Name:
                     </label>
@@ -291,20 +291,20 @@ function TreeDonationModal(props) {
             content: (
                 <>
                     <p className=" font-bold mb-4 mt-6">{tree}</p>
-                    <div className="grid grid-cols-12 gap-4">
+                    <div className="grid grid-cols-12 sm:gap-4">
                         <p className="col-span-4 font-bold mb-2">Baum:</p>
                         <div className="col-span-8 flex items-center">
                             <img className="h-16" src={treeIcons[treeIcon].src} alt="" />
                         </div>
 
-                        <p className="col-span-4 mb-2">Spendensumme:</p>
-                        <p className="col-span-8 mb-2">EUR {donationAmount},-</p>
+                        <p className="col-span-6 sm:col-span-4 mb-2">Spendensumme:</p>
+                        <p className="col-span-6 sm:col-span-8 mb-2">EUR {donationAmount},-</p>
 
-                        <p className="col-span-4 mb-2">Name:</p>
-                        <p className="col-span-8 mb-2">{name}</p>
+                        <p className="col-span-6 sm:col-span-4 mb-2">Name:</p>
+                        <p className="col-span-6 sm:col-span-8 mb-2">{name}</p>
 
-                        <p className="col-span-4 mb-2">Kommentar:</p>
-                        <p className="col-span-8 mb-2">{comment}</p>
+                        <p className="col-span-6 sm:col-span-4 mb-2">Kommentar:</p>
+                        <p className="col-span-6 sm:col-span-8 mb-2">{comment}</p>
 
                         <div className="col-span-12 flex items-center mb-4">
                             <input
@@ -323,13 +323,13 @@ function TreeDonationModal(props) {
 
     return (
         <div className="p-8 sm:p-16 bg-gray-50">
-            <h2 className="font-sans text-3xl uppercase font-bold mb-12">
+            <h2 className="font-sans text-lg sm:text-3xl uppercase font-bold mb-6 sm:mb-12">
                 Helfen Sie uns, <span className="text-primaryColor-600">grüner</span> zu werden
             </h2>
             <div>
-                <h3 className="font-sans text-lg font-semibold mt-6">{steps[activeStep].title}</h3>
+                <h3 className="font-sans sm:text-lg font-semibold mt-6">{steps[activeStep].title}</h3>
                 <div>{steps[activeStep].content}</div>
-                <div className="grid grid-cols-12 gap-8 mt-8">
+                <div className="grid grid-cols-12 sm:gap-8 mt-4 sm:mt-8">
                     {activeStep > 0 && (
                         <button
                             className="bg-primaryColor-700 col-span-12 sm:col-span-6 font-sans myButton z-30 mt-6 font-semibold hover-underline-animation z-20 flex items-center justify-center text-white lg:mt-8 py-2 text-sm sm:text-base sm:py-3 px-6 min-w-[10rem] w-full uppercase rounded-md md:mt-8"
@@ -347,7 +347,7 @@ function TreeDonationModal(props) {
                         </button>
                     ) : (
                         <button
-                            className="bg-primaryColor col-span-12 sm:col-span-6 font-sans myButton z-30 mt-6 font-semibold hover-underline-animation z-20 flex items-center justify-center text-white lg:mt-8 py-2 text-sm sm:text-base sm:py-3 px-6 min-w-[10rem] w-full uppercase rounded-md md:mt-8"
+                            className="bg-primaryColor col-span-12 sm:col-span-6 font-sans myButton z-30 mt-6 font-semibold hover-underline-animation z-20 flex items-center justify-center text-white lg:mt-8 py-2 text-sm sm:text-base sm:py-3 px-6 sm:min-w-[10rem] w-full uppercase rounded-md md:mt-8"
                             onClick={handlePayment}
                         >
                             Pay
