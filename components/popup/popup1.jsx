@@ -25,16 +25,16 @@ const Popup = () => {
                     <div className="fixed top-0 left-0 w-full h-full bg-black opacity-70"></div>
                     <div
                         style={{ backgroundImage: `url(${BG.src})` }}
-                        className="p-16 w-[960px] h-[640px] grid grid-cols-12 rounded-lg shadow-lg z-10"
+                        className="p-10 sm:p-16 w-[98%] sm:w-[960px] h-auto sm:h-[640px] grid grid-cols-12 rounded-lg shadow-lg z-10"
                     >
                         <button className="absolute top-2 right-2" onClick={handleClosePopup}>
                             <FaTimes className="h-5 w-5 text-gray-600" />
                         </button>
-                        <h2 className="text-4xl col-span-12 sm:col-span-6 font-bold font-semibold mb-2 uppercase">
+                        <h2 className="text-xl  sm:text-4xl col-span-12 sm:col-span-6 font-bold font-semibold mb-8 sm:mb-2 uppercase">
                             Machen Sie unsere Stadt <span className="text-primaryColor-600">grüner</span>
                         </h2>
-                        <div className="sm:col-span-0"></div>
-                        <div className="mb-4 col-span-12 sm:col-span-6 font-semibold">
+                        {/* <div className="sm:col-span-0"></div> */}
+                        <div className="sm:mb-4 mb-10 col-span-12 sm:col-span-6 font-semibold">
                             <p>Helfen Sie mit, unsere Stadt lebenswerter & schöner zu machen!</p>
                             <p>Mit Ihrer Spende wird ein Baum an einem Platz Ihrer Wahl gepflanzt.</p>
                         </div>

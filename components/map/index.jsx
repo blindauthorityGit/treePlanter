@@ -111,9 +111,9 @@ function MapPage() {
         const mapObj = new Map({
             container: mapContainer.current,
             style: mapboxStyles[styleIndex],
-            center: [13.388859, 52.517712],
+            center: [13.405602, 52.520853],
             pitch: 45,
-            zoom: 15.5,
+            zoom: 15.2,
             bearing: -17.6,
             antialias: true,
         });
@@ -336,6 +336,7 @@ function MapPage() {
                     <DonatorList
                         onClick={(e) => {
                             handleFlyToLocation(Data[e.currentTarget.dataset.id].geometry.coordinates);
+                            isMobile ? toggleSidebar() : console.log("NET MOBILE");
                         }}
                     ></DonatorList>
                 )}

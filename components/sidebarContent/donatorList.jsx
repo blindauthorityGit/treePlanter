@@ -30,7 +30,7 @@ const DonatorList = (props) => {
         return { innerWidth, innerHeight };
     }
 
-    const itemsPerPage = Math.floor(windowSize.innerHeight / 76);
+    const itemsPerPage = windowSize.innerHeight <= 844 ? 4 : Math.floor(windowSize.innerHeight / 76);
     // const itemsPerPage = windowSize.innerHeight <= 640 ? 4 : 8;
 
     function sliceIntoChunks(arr, chunkSize) {
@@ -65,7 +65,9 @@ const DonatorList = (props) => {
     return (
         <MainContainer noGap width="fixed relative h-full ">
             <div className="col-span-12 md:p-16 sm:pt-0">
-                <h2 className="font-sans text-3xl font-bold text-primaryColor-900 uppercase">Unsere Stadtvergrüner</h2>
+                <h2 className="font-sans text-lg sm:text-3xl font-bold text-primaryColor-900 uppercase">
+                    Unsere Stadtvergrüner
+                </h2>
                 <hr className="mb-8" />
                 {items && (
                     <>

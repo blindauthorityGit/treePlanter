@@ -92,9 +92,9 @@ const TreeList = (props) => {
     const onLeave = (e) => {};
 
     return (
-        <MainContainer noGap width="fixed relative h-full ">
+        <MainContainer noGap width="fixed relative h-full z-50">
             <div className="col-span-12 md:p-16 sm:pt-0">
-                <h2 className="font-sans text-lg sm:text-3xl font-bold text-primaryColor-900 uppercase">
+                <h2 className="font-sans text-base sm:text-3xl font-bold text-primaryColor-900 uppercase">
                     Diese Plätze warten auf Ihre Bäume
                 </h2>
                 <hr className="mb-8" />

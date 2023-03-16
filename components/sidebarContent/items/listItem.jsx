@@ -6,7 +6,7 @@ function ListItem(props, ref) {
         <>
             <div
                 data-id={props.e.properties.id}
-                className="wrapper hover:bg-primaryColor-50 p-2 cursor-pointer listItem w-full flex items-center mt-2 mb-4  relative "
+                className="wrapper hover:bg-primaryColor-50 p-2 cursor-pointer listItem w-full flex items-center mt-2 mb-2 sm:mb-4  relative "
                 onMouseOver={(e) => {
                     props.onHover(e);
                 }}
@@ -25,7 +25,7 @@ function ListItem(props, ref) {
                         <div className="text-6xl h-full w-full">
                             {props.e.donator.avatar ? (
                                 <div
-                                    className="avatar w-16 h-16 bg-cover rounded-full"
+                                    className="avatar w-10 h-10 sm:w-16 sm:h-16 bg-cover rounded-full"
                                     style={{ backgroundImage: `url(${props.e.donator.avatar})` }}
                                 >
                                     {/* <img className="rounded-full" src={props.e.image} alt="avtrImg" /> */}
@@ -36,12 +36,12 @@ function ListItem(props, ref) {
                         </div>
                     )}
                 </div>
-                <div className="right text-sm sm:text-base w-auto lg:w-64">
+                <div className="right text-xs sm:text-base w-auto lg:w-64">
                     <strong>{!props.e.anon ? props.e.donator.name : "Anonymer Spender"}</strong>
                     <br />
                     Spende: EUR {props.e.donator.sum},-
                     {props.e.donator.kommentar && (
-                        <div className="farRight lg:hidden mt-2 text-xs border p-2 lg:p-4 bg-[#dcdfdc]">
+                        <div className="farRight lg:hidden mt-2 text-xs border p-1 sm:p-2 lg:p-4 bg-[#dcdfdc]">
                             {props.e.donator.kommentar}
                         </div>
                     )}
