@@ -33,7 +33,7 @@ const Popup = () => {
                         <h2 className="text-xl  sm:text-4xl col-span-12 sm:col-span-6 font-bold font-semibold mb-8 sm:mb-2 uppercase">
                             Machen Sie unsere Stadt <span className="text-primaryColor-600">grüner</span>
                         </h2>
-                        {/* <div className="sm:col-span-0"></div> */}
+                        <div className="sm:col-span-0"></div>
                         <div className="sm:mb-4 mb-10 col-span-12 sm:col-span-6 font-semibold">
                             <p>Helfen Sie mit, unsere Stadt lebenswerter & schöner zu machen!</p>
                             <p>Mit Ihrer Spende wird ein Baum an einem Platz Ihrer Wahl gepflanzt.</p>

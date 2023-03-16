@@ -28,7 +28,7 @@ const data = [
         },
         donator: {
             name: "Johannes Buchner",
-            sum: 25,
+            sum: 500,
             avatar: "https://randomuser.me/api/portraits/women/39.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 0,
@@ -49,7 +49,7 @@ const data = [
         },
         donator: {
             name: "",
-            sum: 0,
+            sum: 100,
             avatar: "",
             kommentar: "",
             tree: "",
@@ -70,7 +70,7 @@ const data = [
         },
         donator: {
             name: "Johannes Buchner",
-            sum: 25,
+            sum: 500,
             avatar: "https://randomuser.me/api/portraits/men/93.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 1,
@@ -91,7 +91,7 @@ const data = [
         },
         donator: {
             name: "",
-            sum: 0,
+            sum: 280,
             avatar: "",
             kommentar: "",
             tree: "",
@@ -112,7 +112,7 @@ const data = [
         },
         donator: {
             name: "Johannes Buchner",
-            sum: 25,
+            sum: 500,
             avatar: "https://randomuser.me/api/portraits/men/53.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 2,
@@ -133,7 +133,7 @@ const data = [
         },
         donator: {
             name: "",
-            sum: 0,
+            sum: 10,
             avatar: "",
             tree: "",
         },
@@ -153,7 +153,7 @@ const data = [
         },
         donator: {
             name: "Johannes Buchner",
-            sum: 25,
+            sum: 500,
             avatar: "https://randomuser.me/api/portraits/women/13.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 3,
@@ -174,7 +174,7 @@ const data = [
         },
         donator: {
             name: "",
-            sum: 0,
+            sum: 480,
             avatar: "",
             kommentar: "",
             tree: "",
@@ -195,7 +195,7 @@ const data = [
         },
         donator: {
             name: "Johannes Buchner",
-            sum: 25,
+            sum: 500,
             avatar: "https://randomuser.me/api/portraits/men/13.jpg",
             kommentar: "Damit unsere Stadt wieder grüner wird",
             tree: 0,

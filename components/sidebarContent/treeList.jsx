@@ -10,7 +10,9 @@ import { getUserLocation } from "../../functions/getUserLocation";
 import filterByDistance from "../../functions/filterByDistance";
 
 const TreeList = (props) => {
-    const [itemsAll, setItemsAll] = useState(Data.filter((e) => !e.properties.isClaimed));
+    const [itemsAll, setItemsAll] = useState(
+        Data.filter((e) => !e.properties.isClaimed).sort((a, b) => b.donator.sum - a.donator.sum)
+    );
     const [items, setItems] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
 

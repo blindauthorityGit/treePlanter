@@ -51,6 +51,7 @@ function MapPage() {
 
     //Context Data
     const [data, setData] = useContext(DataContext);
+    const [dataGoal, setDataGoal] = useState(data);
 
     //REFS
     const mainBtnRef = useRef(null);
@@ -205,6 +206,8 @@ function MapPage() {
                             id={marker.properties.id}
                             coordinates={marker.geometry.coordinates}
                             dataID={marker.properties.id}
+                            sum={marker.donator.sum}
+                            donators={data.filter((e) => e.properties.isClaimed)}
                         />
                     );
                 }
@@ -356,7 +359,7 @@ function MapPage() {
             </Sidebar2>
             <div className="container grid grid-cols-12 p-8 sm:p-16 col-span-12 row-start-2 row-end-2 mx-auto pt-6">
                 <div className="col-span-12 sm:col-span-6 bg-white ">
-                    <Goal klasse="bg-white px-12 pb-6 sm:pb-10 pt-2 sm:pt-4 shadow"></Goal>
+                    <Goal data={dataGoal} klasse="bg-white px-12 pb-6 sm:pb-10 pt-2 sm:pt-4 shadow"></Goal>
                 </div>
                 <div className="col-span-12 sm:col-span-6 flex justify-end z-30 pt-8">
                     <div

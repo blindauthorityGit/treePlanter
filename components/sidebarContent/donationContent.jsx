@@ -189,7 +189,7 @@ function TreeDonationModal(props) {
                         <input
                             type="range"
                             min="0"
-                            max="400"
+                            max="500"
                             value={donationAmount}
                             onChange={handleDonationAmountChange}
                             className="w-full h-2 bg-gradient-to-r from-teal-400 to-teal-500 rounded-full appearance-none focus:outline-none"
@@ -197,7 +197,7 @@ function TreeDonationModal(props) {
                         <input
                             type="number"
                             min="0"
-                            max="400"
+                            max="500"
                             value={`${donationAmount}`}
                             onChange={handleDonationInputChange}
                             className="w-16 text-center bg-gray-100 rounded-md focus:outline-none text-2xl font-medium text-gray-700"

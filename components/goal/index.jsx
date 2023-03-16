@@ -8,14 +8,14 @@ import { DataContext } from "../../context/dataContext";
 const Goal = (props) => {
     const { userList, setUserList } = useState(Data);
     const [sum, setSum] = useState(0);
-    const [goal, setGoal] = useState(500);
+    const [goal, setGoal] = useState(10000);
     const [percentage, setPercentage] = useState(0);
     const [showCounter, setShowCounter] = useState(false);
 
     const countRef = useRef();
 
     //Context Data
-    const [data, setData] = useContext(DataContext);
+    const [data, setData] = useState(props.data);
 
     useEffect(() => {
         console.log(Data[0].donator.sum);
@@ -37,7 +37,7 @@ const Goal = (props) => {
     return (
         <>
             <div className={`${props.klasse} relative font-sans`}>
-                <div className="headline font-bold text-xs sm:text-xl mb-2 sm:mb-4">Erreichtes Ziel</div>
+                <div className="headline font-bold text- sm:text-xl mb-2 sm:mb-4">Erreichtes Ziel</div>
                 <div
                     className={` ${
                         percentage == 100 ? "font-bold" : ""
