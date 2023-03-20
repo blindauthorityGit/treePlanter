@@ -203,11 +203,11 @@ function MapPage() {
                 // Create the background div
                 if (!marker.properties.isClaimed) {
                     const bg = document.createElement("div");
-                    bg.style.width = "10%";
+                    bg.style.width = "15%";
                     bg.style.height = "100%";
                     bg.style.backgroundColor = "white"; // Replace with your desired background color
                     bg.style.borderRadius = "10%";
-                    bg.style.border = "1px solid grey";
+                    bg.style.border = "1px solid lightgrey";
                     el.appendChild(bg);
 
                     // Create the donation bar div
@@ -215,7 +215,7 @@ function MapPage() {
                     donationBar.style.position = "absolute";
                     donationBar.style.bottom = 0;
                     donationBar.style.left = 0;
-                    donationBar.style.width = "10%";
+                    donationBar.style.width = "15%";
                     donationBar.style.height = "0";
                     donationBar.style.backgroundColor = "#B0DBC0"; // Replace with your desired donation bar color
                     donationBar.style.border = "1px solid #37794F";
@@ -345,11 +345,13 @@ function MapPage() {
             <SidebarButtons
                 onClickTree={() => {
                     toggleSidebar();
+                    map.fire("closeAllPopups");
                     setSideBarName("treeList");
                     setLeftOpen(!leftOpen);
                 }}
                 onClickDonator={() => {
                     toggleSidebar();
+                    map.fire("closeAllPopups");
                     setSideBarName("donatorList");
                 }}
             ></SidebarButtons>
@@ -357,6 +359,7 @@ function MapPage() {
                 {sidebarName === "donatorList" && (
                     <DonatorList
                         onClick={(e) => {
+                            map.fire("closeAllPopups");
                             handleFlyToLocation(Data[e.currentTarget.dataset.id].geometry.coordinates);
                             isMobile ? toggleSidebar() : console.log("NET MOBILE");
                         }}
@@ -368,6 +371,7 @@ function MapPage() {
                             handleFlyToLocation(Data[e.currentTarget.dataset.id].geometry.coordinates);
                             console.log(Data[e.currentTarget.dataset.id].properties.id);
                             isMobile ? toggleSidebar() : console.log("NET MOBILE");
+
                             openPopup(`popup-${Data[e.currentTarget.dataset.id].properties.id}`);
                         }}
                     ></TreeList>
@@ -391,6 +395,7 @@ function MapPage() {
                             setLeftOpen(!leftOpen);
                             setSideBarName("treeList");
                             console.log(markers);
+                            map.fire("closeAllPopups");
                         }}
                     >
                         SPENDEN
