@@ -53,11 +53,12 @@ function TreeListItem(props, ref) {
                         </div>
                     )}
                 </div>
-                <div className="right text-sm sm:text-sm w-auto lg:w-64">{address}</div>
-                <div className="right text-sm sm:text-sm w-auto lg:w-36 pl-6">
-                    <strong>€ {props.e.donator.sum} von € 500,-</strong>
+                <div className="grid grid-cols-12">
+                    <div className="right col-span-10 text-xs sm:text-sm w-auto lg:w-64">{address}</div>
+                    <div className="right col-span-2 text-xs sm:text-sm w-auto lg:w-36 pl-6 text-right">
+                        <strong>€{500 - props.e.donator.sum},-</strong>
+                    </div>
                 </div>
-
                 <hr />
                 <div className="absolute h-1 w-full bg-white border top-0 border-primaryColor-600">
                     {/* <div
