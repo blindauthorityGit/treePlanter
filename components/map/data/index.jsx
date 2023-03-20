@@ -10,6 +10,13 @@ const fetchAvatar = async () => {
     return avatarUrl;
 };
 
+const dimensions = {
+    tree1: {
+        desktop: [60, 125],
+        mobile: [30, 62.5],
+    },
+};
+
 fetchAvatar();
 
 const data = [
@@ -21,6 +28,7 @@ const data = [
             isClaimed: true,
             icon: "tree1",
             iconSize: [60, 125],
+            aspectRatio: 0.48,
         },
         geometry: {
             type: "Point",
@@ -42,6 +50,7 @@ const data = [
             isClaimed: false,
             icon: "tree2",
             iconSize: [50, 100],
+            aspectRatio: 0.5,
         },
         geometry: {
             type: "Point",
@@ -63,6 +72,7 @@ const data = [
             isClaimed: true,
             icon: "tree3",
             iconSize: [70, 70],
+            aspectRatio: 1,
         },
         geometry: {
             type: "Point",
@@ -84,6 +94,7 @@ const data = [
             isClaimed: false,
             icon: "tree4",
             iconSize: [50, 100],
+            aspectRatio: 0.5,
         },
         geometry: {
             type: "Point",
@@ -105,6 +116,7 @@ const data = [
             isClaimed: true,
             icon: "tree5",
             iconSize: [70, 120],
+            aspectRatio: 0.58,
         },
         geometry: {
             type: "Point",
@@ -126,6 +138,7 @@ const data = [
             isClaimed: false,
             icon: "tree6",
             iconSize: [50, 100],
+            aspectRatio: 0.5,
         },
         geometry: {
             type: "Point",
@@ -146,6 +159,7 @@ const data = [
             isClaimed: true,
             icon: "tree7",
             iconSize: [80, 110],
+            aspectRatio: 0.73,
         },
         geometry: {
             type: "Point",
@@ -167,6 +181,7 @@ const data = [
             isClaimed: false,
             icon: "tree8",
             iconSize: [50, 100],
+            aspectRatio: 0.5,
         },
         geometry: {
             type: "Point",
@@ -188,6 +203,7 @@ const data = [
             isClaimed: true,
             icon: "tree1",
             iconSize: [60, 125],
+            aspectRatio: 0.48,
         },
         geometry: {
             type: "Point",
@@ -209,6 +225,7 @@ const data = [
             isClaimed: false,
             icon: "tree1",
             iconSize: [60, 125],
+            aspectRatio: 0.48,
         },
         geometry: {
             type: "Point",
@@ -230,6 +247,7 @@ const data = [
             isClaimed: false,
             icon: "tree2",
             iconSize: [50, 100],
+            aspectRatio: 0.5,
         },
         geometry: {
             type: "Point",
@@ -252,6 +270,7 @@ const data = [
             isClaimed: false,
             icon: "tree3",
             iconSize: [50, 100],
+            aspectRatio: 0.5,
         },
         geometry: {
             type: "Point",
@@ -274,6 +293,7 @@ const data = [
             isClaimed: false,
             icon: "tree1",
             iconSize: [50, 100],
+            aspectRatio: 0.5,
         },
         geometry: {
             type: "Point",
@@ -296,6 +316,7 @@ const data = [
             isClaimed: false,
             icon: "tree4",
             iconSize: [50, 100],
+            aspectRatio: 0.5,
         },
         geometry: {
             type: "Point",
@@ -318,6 +339,7 @@ const data = [
             isClaimed: false,
             icon: "tree2",
             iconSize: [50, 100],
+            aspectRatio: 0.5,
         },
         geometry: {
             type: "Point",
@@ -340,6 +362,7 @@ const data = [
             isClaimed: false,
             icon: "tree3",
             iconSize: [50, 100],
+            aspectRatio: 0.5,
         },
         geometry: {
             type: "Point",

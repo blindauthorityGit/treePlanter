@@ -42,7 +42,6 @@ const DonationContent = dynamic(() => import("../../components/sidebarContent/do
 // FUNCTIONS
 import getDistance from "../../functions/getDistance";
 import { useBreakpoints } from "../../functions/useBreakpoints";
-import { GiVikingLonghouse } from "react-icons/gi";
 
 function MapPage() {
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API;
@@ -55,7 +54,7 @@ function MapPage() {
     const [dataGoal, setDataGoal] = useState(data);
 
     //MARKERS
-    const [markers, setMarkers] = useState([]);
+    const [marker, setMarker] = useState([]);
 
     //REFS
     const mainBtnRef = useRef(null);
@@ -121,10 +120,7 @@ function MapPage() {
                 ...item,
                 properties: {
                     ...item.properties,
-                    iconSize: [
-                        item.properties.iconSize[0] * (1 - (zoomLevel - 12) * 0.1),
-                        item.properties.iconSize[1] * 1 - (zoomLevel - 12) * 0.1,
-                    ],
+                    iconSize: [item.properties.iconSize[0] / 2, item.properties.iconSize[1] / 2],
                 },
             };
         });
@@ -151,11 +147,6 @@ function MapPage() {
         if (map) {
             data.map((marker, i) => {
                 // Create a DOM element for each marker.
-                if (markers.length > 0) {
-                    markers.map((e) => {
-                        e.remove();
-                    });
-                }
                 let personalData = "";
                 if (marker.properties.isClaimed) {
                     personalData = ReactDOMServer.renderToString(
@@ -190,86 +181,40 @@ function MapPage() {
                     personalData
                 );
                 popups[popupId] = popup;
-                let donationBar;
                 const el = document.createElement("div");
-                const width = isMobile ? marker.properties.iconSize[0] / 1.5 : marker.properties.iconSize[0];
-                const height = isMobile
-                    ? marker.properties.iconSize[0] / 1.5 / marker.properties.aspectRatio
-                    : marker.properties.iconSize[1];
+                const width = marker.properties.iconSize[0];
+                const height = marker.properties.iconSize[1];
                 (el.id = marker.properties.id), (el.className = "marker");
+                marker.properties.isClaimed
+                    ? (() => {
+                          switch (marker.donator.tree) {
+                              case 0:
+                                  return (el.style.backgroundImage = `url(${Tree1.src})`);
+                              case 1:
+                                  return (el.style.backgroundImage = `url(${Tree2.src})`);
+                              case 2:
+                                  return (el.style.backgroundImage = `url(${Tree3.src})`);
+                              case 3:
+                                  return (el.style.backgroundImage = `url(${Tree4.src})`);
+                              default:
+                                  return (el.style.backgroundImage = `url(${Tree1Claimed.src})`);
+                          }
+                      })()
+                    : (el.style.backgroundImage = `url(${Tree1Unclaimed.src})`);
                 el.style.width = `${width}px`;
                 el.style.height = `${height}px`;
+                el.style.backgroundSize = "100%";
+                el.classList.add("transition-all", "hover:scale-110");
 
-                // Create the background div
-                if (!marker.properties.isClaimed) {
-                    const bg = document.createElement("div");
-                    bg.style.width = "10%";
-                    bg.style.height = "100%";
-                    bg.style.backgroundColor = "white"; // Replace with your desired background color
-                    bg.style.borderRadius = "10%";
-                    bg.style.border = "1px solid grey";
-                    el.appendChild(bg);
-
-                    // Create the donation bar div
-                    donationBar = document.createElement("div");
-                    donationBar.style.position = "absolute";
-                    donationBar.style.bottom = 0;
-                    donationBar.style.left = 0;
-                    donationBar.style.width = "10%";
-                    donationBar.style.height = "0";
-                    donationBar.style.backgroundColor = "#B0DBC0"; // Replace with your desired donation bar color
-                    donationBar.style.border = "1px solid #37794F";
-                    donationBar.id = "donationBar"; // Replace with your desired donation bar color
-                    bg.appendChild(donationBar);
-                }
-
-                // Add the tree image
-                const tree = document.createElement("div");
-                tree.style.position = "absolute";
-                tree.style.top = "50%";
-                tree.style.left = "50%";
-                tree.style.transform = "translate(-50%, -50%)";
-                if (marker.properties.isClaimed) {
-                    switch (marker.donator.tree) {
-                        case 0:
-                            tree.style.backgroundImage = `url(${Tree1.src})`;
-                            break;
-                        case 1:
-                            tree.style.backgroundImage = `url(${Tree2.src})`;
-                            break;
-                        case 2:
-                            tree.style.backgroundImage = `url(${Tree3.src})`;
-                            break;
-                        case 3:
-                            tree.style.backgroundImage = `url(${Tree4.src})`;
-                            break;
-                        default:
-                            tree.style.backgroundImage = `url(${Tree1Claimed.src})`;
-                            break;
-                    }
-                } else {
-                    tree.style.backgroundImage = `url(${Tree1Unclaimed.src})`;
-                }
-                tree.style.width = `${width * 0.7}px`;
-                tree.style.height = `${height * 0.7}px`;
-                tree.style.backgroundSize = "100%";
-                tree.classList.add("transition-all", "hover:scale-110");
-                el.appendChild(tree);
-
-                // Update the donation bar height
-                if (!marker.properties.isClaimed) {
-                    const donationPercent = marker.donator.sum / 500;
-                    donationBar.style.height = `${donationPercent * 100}%`;
-                }
+                el.addEventListener("click", (e) => {
+                    console.log(e.target);
+                });
 
                 // Add markers to the map.
                 marker.properties.isClaimed
                     ? new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).setPopup(popup).addTo(map)
                     : new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).setPopup(popup).addTo(map);
                 setMapLoaded(map);
-
-                // SET UP TEMP MARKER ARRAY FOR REMOVAL OPTIONS
-                setMarkers((prev) => [...prev, el]);
 
                 popup.on("open", () => {
                     setPopupOpen(true);
@@ -282,6 +227,8 @@ function MapPage() {
                             const index = e.currentTarget.dataset.id;
                             setID(index);
                             const coordinates = Data[index].geometry.coordinates;
+                            console.log(index, e.currentTarget);
+                            console.log(e.currentTarget.dataset.id, Data[index].geometry.coordinates);
                             setFlyToLocation(coordinates);
                             popup.remove();
                         });
@@ -295,14 +242,14 @@ function MapPage() {
                 });
                 map.on("zoom", () => {
                     const zoomLevel = map.getZoom();
-                    console.log(zoomLevel);
-                    if (zoomLevel < 13) {
-                        // updateIconSizes(zoomLevel);
+                    if (zoomLevel > 10) {
+                        setData([]);
+                        updateIconSizes(zoomLevel);
                     }
                 });
             });
         }
-    }, [data, map]);
+    }, [data, map, isMobile, isTablet, isDesktop]);
 
     function openPopup(popupId) {
         console.log(popups);
@@ -390,7 +337,6 @@ function MapPage() {
                             toggleSidebar();
                             setLeftOpen(!leftOpen);
                             setSideBarName("treeList");
-                            console.log(markers);
                         }}
                     >
                         SPENDEN

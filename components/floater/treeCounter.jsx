@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 // import Logo from "../../assets/SVG/logowhite.svg";
-import Logo from "../../assets/logoNeu.png";
+import Logo from "../../assets/svg/logoNeu.svg";
+// import Logo from "../../assets/logoNeu.png";
 import { BsFacebook, BsInstagram, BsTwitter, BsInfoCircleFill } from "react-icons/bs";
 const TreeCounter = ({ trees }) => {
     return (
