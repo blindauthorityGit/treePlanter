@@ -323,7 +323,8 @@ function MapPage() {
             console.log(flyToLocation);
             mapLoaded.flyTo({
                 center: flyToLocation,
-                zoom: 18,
+                zoom: 17,
+                duration: 1000,
                 essential: true,
             });
         }
