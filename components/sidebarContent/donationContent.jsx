@@ -192,7 +192,7 @@ function TreeDonationModal(props) {
                             max="500"
                             value={donationAmount}
                             onChange={handleDonationAmountChange}
-                            className="w-full h-2 bg-gradient-to-r from-teal-400 to-teal-500 rounded-full appearance-none focus:outline-none"
+                            className="w-full h-2 bg-gradient-to-r from-primaryColor-100 to-primaryColor-500 rounded-full appearance-none focus:outline-none"
                         />
                         <input
                             type="number"
