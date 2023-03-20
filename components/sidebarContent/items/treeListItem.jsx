@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import React, { forwardRef } from "react";
 import { BsTree } from "react-icons/bs";
 import mapboxgl from "mapbox-gl";
+import { motion } from "framer-motion";
 
 function TreeListItem(props, ref) {
     const [address, setAddress] = useState("");
@@ -22,7 +23,7 @@ function TreeListItem(props, ref) {
         <>
             <div
                 data-id={props.e.properties.id}
-                className="wrapper hover:bg-primaryColor-50 p-2 cursor-pointer listItem w-full flex items-center mt-2 mb-4  relative "
+                className="wrapper relative hover:bg-primaryColor-50 p-2 cursor-pointer listItem w-full flex items-center mt-2 mb-4  relative "
                 onMouseOver={(e) => {
                     props.onHover(e);
                 }}
@@ -58,6 +59,22 @@ function TreeListItem(props, ref) {
                 </div>
 
                 <hr />
+                <div className="absolute h-1 w-full bg-white border top-0 border-primaryColor-600">
+                    {/* <div
+                        className="sum bg-primaryColor-500 h-full"
+                        style={{ width: (props.e.donator.sum / 500) * 100 + "%" }}
+                    ></div> */}
+                    <motion.div
+                        className={`inner bg-primaryColor-500  h-full relative`}
+                        id="innerProgress"
+                        layout
+                        initial={{
+                            width: 0,
+                        }}
+                        animate={{ width: (props.e.donator.sum / 500) * 100 + "%" }}
+                        transition={{ duration: "300ms", delay: 1.35, type: "spring" }}
+                    ></motion.div>
+                </div>
             </div>
         </>
     );
