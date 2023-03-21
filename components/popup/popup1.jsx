@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
-import Logo from "../../assets/Web_Full.svg";
+import Logo from "../../assets/LogoNu.svg";
 
 //ASSETS
 import BG from "../../assets/popup/bg.jpg";
