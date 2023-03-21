@@ -18,7 +18,7 @@ export default function Home() {
     return (
         <MainContainer width="max-w-[100%] container h-full grid-rows-2 m-auto" style={{ gridTemplateRows: "3fr 1fr" }}>
             <Head>
-                <title>Sabocon Tree Planter</title>
+                <title>Sabocon Tree Donator</title>
             </Head>
             <TreeCounter trees={data.filter((e) => e.properties.isClaimed).length} />
 
