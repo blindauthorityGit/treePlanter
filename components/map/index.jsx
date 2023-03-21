@@ -156,7 +156,61 @@ function MapPage() {
                         e.remove();
                     });
                 }
+
+                if (show3D) {
+                    map.on("style.load", () => {
+                        // Insert the layer beneath any symbol layer.
+                        const layers = map.getStyle().layers;
+                        const labelLayerId = layers.find(
+                            (layer) => layer.type === "symbol" && layer.layout["text-field"]
+                        ).id;
+
+                        // The 'building' layer in the Mapbox Streets
+                        // vector tileset contains building height data
+                        // from OpenStreetMap.
+                        map.addLayer(
+                            {
+                                id: "add-3d-buildings",
+                                source: "composite",
+                                "source-layer": "building",
+                                filter: ["==", "extrude", "true"],
+                                type: "fill-extrusion",
+                                minzoom: 15,
+                                paint: {
+                                    "fill-extrusion-color": "#aaa",
+
+                                    // Use an 'interpolate' expression to
+                                    // add a smooth transition effect to
+                                    // the buildings as the user zooms in.
+                                    "fill-extrusion-height": [
+                                        "interpolate",
+                                        ["linear"],
+                                        ["zoom"],
+                                        15,
+                                        0,
+                                        15.05,
+                                        ["get", "height"],
+                                    ],
+                                    "fill-extrusion-base": [
+                                        "interpolate",
+                                        ["linear"],
+                                        ["zoom"],
+                                        15,
+                                        0,
+                                        15.05,
+                                        ["get", "min_height"],
+                                    ],
+                                    "fill-extrusion-opacity": 0.6,
+                                },
+                            },
+                            labelLayerId
+                        );
+                    });
+                }
+
                 let personalData = "";
+                const personalDataContainer = document.createElement("div");
+                const donatePopupContainer = document.createElement("div");
                 if (marker.properties.isClaimed) {
                     personalData = ReactDOMServer.renderToString(
                         <PersonalData
@@ -203,9 +257,9 @@ function MapPage() {
                 // Create the background div
                 if (!marker.properties.isClaimed) {
                     const bg = document.createElement("div");
-                    bg.style.width = "15%";
+                    bg.style.width = "100%";
                     bg.style.height = "100%";
-                    bg.style.backgroundColor = "white"; // Replace with your desired background color
+                    bg.style.backgroundColor = "rgba(255, 255, 255, 0.5) "; // Replace with your desired background color
                     bg.style.borderRadius = "10%";
                     bg.style.border = "1px solid lightgrey";
                     el.appendChild(bg);
@@ -215,10 +269,10 @@ function MapPage() {
                     donationBar.style.position = "absolute";
                     donationBar.style.bottom = 0;
                     donationBar.style.left = 0;
-                    donationBar.style.width = "15%";
+                    donationBar.style.width = "100%";
                     donationBar.style.height = "0";
                     donationBar.style.backgroundColor = "#B0DBC0"; // Replace with your desired donation bar color
-                    donationBar.style.border = "1px solid #37794F";
+
                     donationBar.id = "donationBar"; // Replace with your desired donation bar color
                     bg.appendChild(donationBar);
                 }
@@ -295,7 +349,6 @@ function MapPage() {
                 });
                 map.on("zoom", () => {
                     const zoomLevel = map.getZoom();
-                    console.log(zoomLevel);
                     if (zoomLevel < 13) {
                         // updateIconSizes(zoomLevel);
                     }
@@ -389,7 +442,7 @@ function MapPage() {
                     <div
                         ref={mainBtnRef}
                         className={`${
-                            sidebarName === "treeList" ? "bg-primaryColor-800" : ""
+                            sidebarName === "treeList" ? "bg-text" : ""
                         } cursor-pointer hover:bg-primaryColor-700 transition-all w-full sm:w-2/4 h-12 sm:h-16 rounded-xl flex justify-center items-center font-sans font-extrabold text-white text-base sm:text-xl bg-primaryColor-800`}
                         onClick={() => {
                             toggleSidebar();
@@ -404,8 +457,6 @@ function MapPage() {
                 </div>
             </div>
             {isOpen && <Overlay></Overlay>}
-            <div className="container ">Powered by Sabocon, 2023</div>
-
             {mapLoaded && <></>}
         </>
     );

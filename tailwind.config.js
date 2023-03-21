@@ -77,6 +77,9 @@ module.exports = {
                 bg: {
                     DEFUALT: "#22313F",
                 },
+                text: {
+                    DEFAULT: "#181D27",
+                },
             },
         },
     },

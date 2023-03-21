@@ -33,30 +33,31 @@ function TreeListItem(props, ref) {
                 onClick={props.onClick}
                 ref={ref}
             >
-                <div className="left pr-6 h-full">
-                    {props.e.anon ? (
-                        <div className="text-6xl">
-                            <BsPersonCircle></BsPersonCircle>
-                        </div>
-                    ) : (
-                        <div className="text-xl h-full w-full">
-                            {props.e.donator.avatar ? (
-                                <div
-                                    className="avatar w-12 h-12 bg-cover rounded-full"
-                                    style={{ backgroundImage: `url(${props.e.donator.avatar})` }}
-                                >
-                                    {/* <img className="rounded-full" src={props.e.image} alt="avtrImg" /> */}
-                                </div>
-                            ) : (
-                                <BsTree></BsTree>
-                            )}
-                        </div>
-                    )}
-                </div>
-                <div className="grid grid-cols-12">
-                    <div className="right col-span-10 text-xs sm:text-sm w-auto lg:w-64">{address}</div>
-                    <div className="right col-span-2 text-xs sm:text-sm w-auto lg:w-36 pl-6 text-right">
-                        <strong>€{500 - props.e.donator.sum},-</strong>
+                <div className="grid grid-cols-12 w-full">
+                    <div className="left col-span-2 pr-6 h-full">
+                        {props.e.anon ? (
+                            <div className="text-6xl">
+                                <BsPersonCircle></BsPersonCircle>
+                            </div>
+                        ) : (
+                            <div className="text-xl h-full w-full">
+                                {props.e.donator.avatar ? (
+                                    <div
+                                        className="avatar w-12 h-12 bg-cover rounded-full"
+                                        style={{ backgroundImage: `url(${props.e.donator.avatar})` }}
+                                    >
+                                        {/* <img className="rounded-full" src={props.e.image} alt="avtrImg" /> */}
+                                    </div>
+                                ) : (
+                                    <BsTree></BsTree>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="right col-span-7 text-xs sm:text-sm w-auto lg:w-64">{address}</div>
+                    <div className="right col-span-3 text-xs sm:text-sm w-auto pl-6 text-right">
+                        <strong>€{props.e.donator.sum} / 500,-</strong>
                     </div>
                 </div>
                 <hr />

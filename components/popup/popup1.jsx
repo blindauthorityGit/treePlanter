@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
+import Logo from "../../assets/Web_Full.svg";
 
 //ASSETS
 import BG from "../../assets/popup/bg.jpg";
@@ -30,7 +31,12 @@ const Popup = () => {
                         <button className="absolute top-2 right-2" onClick={handleClosePopup}>
                             <FaTimes className="h-5 w-5 text-gray-600" />
                         </button>
-                        <h2 className="text-xl  sm:text-4xl col-span-12 sm:col-span-6 font-bold font-semibold mb-8 sm:mb-2 uppercase">
+                        <div className="col-span-12">
+                            {" "}
+                            <img className="h-24" src={Logo.src} alt="" />
+                        </div>
+
+                        <h2 className="text-xl  sm:text-2xl col-span-12 sm:col-span-6 font-bold font-semibold mb-8 sm:mb-2 uppercase">
                             Machen Sie unsere Stadt <span className="text-primaryColor-600">grüner</span>
                         </h2>
                         <div className="sm:col-span-0"></div>
@@ -40,7 +46,6 @@ const Popup = () => {
                         </div>
 
                         <div className="col-span-0"></div>
-
                         <button
                             className="bg-primaryColor-600 sm:h-2/4 col-span-12 sm:col-span-6 text-white px-4 py-2 rounded-lg hover:primaryColor-800"
                             onClick={handleClosePopup}
