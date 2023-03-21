@@ -33,7 +33,7 @@ const Popup = () => {
                         </button>
                         <div className="col-span-12">
                             {" "}
-                            <img className="h-24" src={Logo.src} alt="" />
+                            <img className="h-16 mb-6 sm:mb-0 sm:h-24" src={Logo.src} alt="" />
                         </div>
 
                         <h2 className="text-xl  sm:text-2xl col-span-12 sm:col-span-6 font-bold font-semibold mb-8 sm:mb-2 uppercase">
