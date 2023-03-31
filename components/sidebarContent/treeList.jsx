@@ -3,6 +3,7 @@ import MainContainer from "../layout/mainContainer";
 import ReactPaginate from "react-paginate";
 import TreeListItem from "./items/treeListItem";
 import Data from "../map/data";
+import DataSki from "../map/data/dataSki";
 import { GiConvergenceTarget } from "react-icons/gi";
 
 // FUNCTIONS
@@ -11,7 +12,7 @@ import filterByDistance from "../../functions/filterByDistance";
 
 const TreeList = (props) => {
     const [itemsAll, setItemsAll] = useState(
-        Data.filter((e) => !e.properties.isClaimed).sort((a, b) => b.donator.sum - a.donator.sum)
+        DataSki.filter((e) => !e.properties.isClaimed).sort((a, b) => b.donator.sum - a.donator.sum)
     );
     const [items, setItems] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
@@ -61,7 +62,7 @@ const TreeList = (props) => {
         return { innerWidth, innerHeight };
     }
 
-    const itemsPerPage = windowSize.innerHeight <= 844 ? 6 : Math.floor(windowSize.innerHeight / 76);
+    const itemsPerPage = windowSize.innerHeight <= 844 ? 6 : Math.floor(windowSize.innerHeight / 85);
     // const itemsPerPage = windowSize.innerHeight <= 640 ? 4 : 8;
 
     function sliceIntoChunks(arr, chunkSize) {

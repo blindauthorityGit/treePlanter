@@ -8,6 +8,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import Data from "./data";
+import DataSki from "./data/dataSki";
 
 //CONTEXT
 import { SidebarProvider, SidebarContext } from "../../context/sidebarContext";
@@ -91,7 +92,7 @@ function MapPage() {
         "mapbox://styles/mapbox/navigation-guidance-day-v4",
         "mapbox://styles/mapbox/navigation-guidance-night-v4",
     ];
-    const [styleIndex, setStyleIndex] = useState(0);
+    const [styleIndex, setStyleIndex] = useState(3);
 
     function handleToggle() {
         setIsOpen(!isOpen);
@@ -132,14 +133,20 @@ function MapPage() {
         setData(newData);
     };
 
+    const ski = true;
+
+    useEffect(() => {
+        console.log(data);
+    }, []);
+
     useEffect(() => {
         // Initialize map
         const mapObj = new Map({
             container: mapContainer.current,
             style: mapboxStyles[styleIndex],
-            center: [13.405602, 52.520853],
+            center: ski ? [13.032872, 47.376048] : [13.405602, 52.520853],
             pitch: 45,
-            zoom: 15.2,
+            zoom: ski ? 18 : 15.2,
             bearing: -17.6,
             antialias: true,
         });
@@ -414,7 +421,7 @@ function MapPage() {
                     <DonatorList
                         onClick={(e) => {
                             map.fire("closeAllPopups");
-                            handleFlyToLocation(Data[e.currentTarget.dataset.id].geometry.coordinates);
+                            handleFlyToLocation(data[e.currentTarget.dataset.id].geometry.coordinates);
                             isMobile ? toggleSidebar() : console.log("NET MOBILE");
                         }}
                     ></DonatorList>
@@ -422,11 +429,11 @@ function MapPage() {
                 {sidebarName === "treeList" && (
                     <TreeList
                         onClick={(e) => {
-                            handleFlyToLocation(Data[e.currentTarget.dataset.id].geometry.coordinates);
-                            console.log(Data[e.currentTarget.dataset.id].properties.id);
+                            handleFlyToLocation(data[e.currentTarget.dataset.id].geometry.coordinates);
+                            console.log(data[e.currentTarget.dataset.id].properties.id);
                             isMobile ? toggleSidebar() : console.log("NET MOBILE");
 
-                            openPopup(`popup-${Data[e.currentTarget.dataset.id].properties.id}`);
+                            openPopup(`popup-${data[e.currentTarget.dataset.id].properties.id}`);
                         }}
                     ></TreeList>
                 )}
