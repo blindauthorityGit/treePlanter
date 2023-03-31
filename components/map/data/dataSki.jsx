@@ -1112,7 +1112,7 @@ const DataSki = [
         },
         geometry: {
             type: "Point",
-            coordinates: [13.033379, 47.375606],
+            coordinates: [13.033379, 47.375608],
         },
         donator: {
             name: "",
