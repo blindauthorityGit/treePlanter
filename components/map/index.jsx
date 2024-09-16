@@ -346,82 +346,80 @@ function MapPage() {
                 const center = turf.center(turf.polygon(area.geometry.coordinates)).geometry.coordinates;
 
                 // Create the marker and add it to the map
-                const marker = new mapboxgl.Marker(largeTreeElement)
-                    .setLngLat(center)
-                    .addTo(mapObj)
-                    .on("click", () => {
-                        // Trigger popup for the corresponding area when the marker is clicked
-                        const clickedArea = area;
+                const marker = new mapboxgl.Marker(largeTreeElement).setLngLat(center).addTo(mapObj);
 
-                        // Create custom popup content just like for the area fill layer
-                        let personalData = "";
-                        if (clickedArea.properties.treesPlanted === clickedArea.properties.treesMax) {
-                            personalData = ReactDOMServer.renderToString(
-                                <PersonalData
-                                    id={clickedArea.properties.id}
-                                    name={clickedArea.properties.name || "Area"}
-                                    treesPlanted={clickedArea.properties.treesPlanted}
-                                    sum={clickedArea.properties.sum}
-                                />
-                            );
-                        } else {
-                            personalData = ReactDOMServer.renderToString(
-                                <DonatePopup
-                                    id={clickedArea.properties.id}
-                                    coordinates={clickedArea.geometry.coordinates}
-                                    treesPlanted={clickedArea.properties.treesPlanted || 0}
-                                    sum={clickedArea.properties.sum}
-                                    name={clickedArea.properties.name || "Area"}
-                                    donators={data.filter((e) => e.properties.isClaimed)}
-                                    dataID={clickedArea.properties.id} // Ensure that the button has a unique identifier like dataID
-                                />
-                            );
+                // Add click event listener to the marker
+                marker.getElement().addEventListener("click", () => {
+                    // Trigger popup for the corresponding area when the marker is clicked
+                    const clickedArea = area;
+
+                    // Create custom popup content just like for the area fill layer
+                    let personalData = "";
+                    if (clickedArea.properties.treesPlanted === clickedArea.properties.treesMax) {
+                        personalData = ReactDOMServer.renderToString(
+                            <PersonalData
+                                id={clickedArea.properties.id}
+                                name={clickedArea.properties.name || "Area"}
+                                treesPlanted={clickedArea.properties.treesPlanted}
+                                sum={clickedArea.properties.sum}
+                            />
+                        );
+                    } else {
+                        personalData = ReactDOMServer.renderToString(
+                            <DonatePopup
+                                id={clickedArea.properties.id}
+                                coordinates={clickedArea.geometry.coordinates}
+                                treesPlanted={clickedArea.properties.treesPlanted || 0}
+                                sum={clickedArea.properties.sum}
+                                name={clickedArea.properties.name || "Area"}
+                                donators={data.filter((e) => e.properties.isClaimed)}
+                                dataID={clickedArea.properties.id} // Ensure that the button has a unique identifier like dataID
+                            />
+                        );
+                    }
+
+                    // Create a unique identifier for the popup
+                    const popupId = `popup-${clickedArea.properties.id}`;
+
+                    // Create a popup with your custom HTML
+                    const popup = new mapboxgl.Popup({
+                        offset: 25,
+                        maxWidth: isMobile ? "220px" : "300px",
+                    }).setHTML(personalData);
+
+                    popups[popupId] = popup;
+
+                    popup.on("open", () => {
+                        setPopupOpen(true);
+
+                        const button = document.getElementById("myButton");
+                        console.log(button);
+
+                        if (button) {
+                            button.addEventListener("click", (e) => {
+                                toggleSidebarRight();
+                                const index = e.currentTarget.dataset.id;
+                                console.log(index);
+
+                                // Find the matching area based on the `id` property
+                                const area = areaGeoJSON.features.find((feature) => feature.properties.id === index);
+
+                                if (area) {
+                                    // Assuming it's a Polygon and you want the first coordinate
+                                    const coordinates = area.geometry.coordinates[0][0];
+                                    console.log("Found coordinates: ", coordinates);
+
+                                    setFlyToLocation(coordinates); // Fly to the coordinates
+                                    popup.remove(); // Close the popup
+                                } else {
+                                    console.error("Area not found for ID: ", index);
+                                }
+                            });
                         }
-
-                        // Create a unique identifier for the popup
-                        const popupId = `popup-${clickedArea.properties.id}`;
-
-                        // Create a popup with your custom HTML
-                        const popup = new mapboxgl.Popup({
-                            offset: 25,
-                            maxWidth: isMobile ? "220px" : "300px",
-                        }).setHTML(personalData);
-
-                        popups[popupId] = popup;
-
-                        popup.on("open", () => {
-                            setPopupOpen(true);
-
-                            const button = document.getElementById("myButton");
-                            console.log(button);
-
-                            if (button) {
-                                button.addEventListener("click", (e) => {
-                                    toggleSidebarRight();
-                                    const index = e.currentTarget.dataset.id;
-                                    console.log(index);
-
-                                    // Find the matching area based on the `id` property
-                                    const area = areaGeoJSON.features.find(
-                                        (feature) => feature.properties.id === index
-                                    );
-
-                                    if (area) {
-                                        // Assuming it's a Polygon and you want the first coordinate
-                                        const coordinates = area.geometry.coordinates[0][0];
-                                        console.log("Found coordinates: ", coordinates);
-
-                                        setFlyToLocation(coordinates); // Fly to the coordinates
-                                        popup.remove(); // Close the popup
-                                    } else {
-                                        console.error("Area not found for ID: ", index);
-                                    }
-                                });
-                            }
-                        });
-
-                        popup.setLngLat(center).addTo(mapObj); // Add popup to the marker's location
                     });
+
+                    popup.setLngLat(center).addTo(mapObj); // Add popup to the marker's location
+                });
 
                 largeMarkers.push(marker); // Store the large marker
             };
