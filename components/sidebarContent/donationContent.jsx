@@ -7,6 +7,7 @@ import Tree2 from "../../assets/trees/tree2.png";
 import Tree3 from "../../assets/trees/tree3.png";
 import Tree4 from "../../assets/trees/tree4.png";
 import { FiEyeOff } from "react-icons/fi";
+import Confetti from "react-confetti";
 
 // STORE
 import { DataContext } from "../../context/dataContext";
@@ -22,7 +23,11 @@ function TreeDonationModal(props) {
 
     // STORE
     const [data, setData] = useContext(DataContext);
-    const { isOpen, setIsOpen, toggleSidebarRight } = useContext(PaymentContext);
+    const { toggleSidebarRight } = useContext(PaymentContext); // Direct reference to close the sidebar
+
+    // CONFETTI AND MODAL STATE
+    const [showConfetti, setShowConfetti] = useState(false);
+    const [showThankYouModal, setShowThankYouModal] = useState(false);
 
     // FUNCTION TO UPDATE DATA
     const handleUpdate = (index, newValue) => {
@@ -125,8 +130,7 @@ function TreeDonationModal(props) {
     }
 
     const handlePayment = () => {
-        // Implement payment logic
-        console.log(name, comment, treeIcon, donationAmount, tree);
+        // Payment logic here
         const formData = {
             id: id,
             name: name,
@@ -137,15 +141,9 @@ function TreeDonationModal(props) {
             iconSize: getIconSizeString(treeIcon),
             avatar: window.localStorage.getItem("image"),
         };
-        console.log(formData);
-        console.log(document.getElementById(`${id}`));
-        console.log(Tree2.src);
-        const el = document.getElementById(`${id}`);
-        el.style.backgroundImage = `url(${Tree2.src})`;
-        console.log(formData);
+
         setData((prevState) => {
             const newData = [...prevState];
-            console.log(newData, formData.sum);
             data[id].properties.isClaimed = true;
             data[id].properties.iconSize = formData.iconSize;
             data[id].donator.name = formData.name;
@@ -153,11 +151,21 @@ function TreeDonationModal(props) {
             data[id].donator.kommentar = formData.comment;
             data[id].donator.sum = Number(formData.sum);
             data[id].donator.tree = formData.tree;
-            // newData[id] = formData;
-            console.log(newData);
             return newData;
         });
+
+        // Show confetti and thank you modal immediately
+        setShowConfetti(true);
+        setShowThankYouModal(true);
+
+        // Close sidebar after showing the confetti
         toggleSidebarRight();
+
+        // Automatically hide the confetti and modal after 5 seconds
+        setTimeout(() => {
+            setShowConfetti(false);
+            setShowThankYouModal(false);
+        }, 5000); // Hide after 5 seconds
     };
 
     const steps = [
@@ -172,10 +180,10 @@ function TreeDonationModal(props) {
                         Ihre Spende wird mit einer Plakette am Baum und einem Eintrag in unserer Spenderliste geehrt.
                     </p>
                     <div className="grid grid-cols-12 text-sm sm:text-lg font-sans font-semibold my-12">
-                        <div className="col-span-4">Baum Nr.{id}</div>
+                        {/* <div className="col-span-4">Baum Nr.{id}</div> */}
                         <div className="col-span-8">
                             {" "}
-                            <p>{adress}</p>
+                            <p>{name}</p>
                         </div>
                     </div>
                 </>
@@ -323,6 +331,15 @@ function TreeDonationModal(props) {
 
     return (
         <div className="p-8 sm:p-16 bg-gray-50">
+            {showConfetti && <Confetti />}
+            {showThankYouModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+                        <h2 className="text-3xl font-bold text-primaryColor-700">Danke für Ihre Spende!</h2>
+                        <p className="text-lg mt-4">Ihr Beitrag hilft, unsere Stadt grüner zu machen!</p>
+                    </div>
+                </div>
+            )}
             <h2 className="font-sans text-lg sm:text-3xl uppercase font-bold mb-6 sm:mb-12">
                 Helfen Sie uns, <span className="text-primaryColor-600">grüner</span> zu werden
             </h2>

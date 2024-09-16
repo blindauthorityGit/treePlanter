@@ -28,13 +28,14 @@ const DonatePopup = (props) => {
     }, []);
 
     const handleClick = (e) => {
+        console.log("Button clicked, dataID: ", props.dataID);
         props.onClick(e);
     };
     return (
         <div className="font-sans p-2 sm:p-6">
-            <h1 class="text-lg sm:text-2xl font-bold mb-4">Baum Nr.{props.id}</h1>
+            <h1 class="text-lg sm:text-2xl font-bold mb-4">{props.name}</h1>
             <div className="grid grid-cols-12">
-                <p>{address}</p>
+                {/* <p>{address}</p> */}
                 <p class="sm:text-sm col-span-12 text-xs">Mit Ihrer Spende können Sie hier einen Baum pflanzen!</p>
                 <p
                     className="font-bold mt-6 sm:text-sm col-span-12 text-xs"
@@ -43,7 +44,7 @@ const DonatePopup = (props) => {
                         console.log("bubu");
                     }}
                 >
-                    Noch € {500 - props.sum},- bis zum Ziel!
+                    Noch € {10000 - props.sum},- bis alle Bäume gepflanzt sind!
                 </p>
                 {props.sum > 0 ? (
                     <div className="col-span-12 flex mt-4">

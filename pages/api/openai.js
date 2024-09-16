@@ -1,34 +1,38 @@
-import { Configuration, OpenAIApi } from "openai";
-console.log(process.env.OPENAI_API_KEY);
+import OpenAI from "openai";
 
-const configuration = new Configuration({
+import axios from "axios";
+
+const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
+    organization: "org-org-70znNudSNHqjY0g9CPs5JHNw",
+    project: "proj_D40NofVUdrlSQ2wP36tfD7uR",
 });
-const openai = new OpenAIApi(configuration);
 
 export default async function handler(req, res) {
     try {
-        console.log(process.env.OPENAI_API_KEY);
-        const prompt = req.body.prompt;
+        const { default: OpenAI } = await import("openai");
 
-        if (!prompt || prompt === "") {
-            return res.status(400).json({ error: "Please send your prompt" });
-        }
-
-        const aiResult = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: `${prompt}`,
-            temperature: 0.9,
-            max_tokens: 2048,
-            frequency_penalty: 0.5,
-            presence_penalty: 0,
+        const openai = new OpenAI({
+            apiKey: process.env.OPENAI_API_KEY,
+            organization: "org-70znNudSNHqjY0g9CPs5JHNw",
+            project: "proj_D40NofVUdrlSQ2wP36tfD7uR",
         });
 
-        const response = aiResult.data.choices[0].text?.trim() || "Sorry problem";
-        console.log(response);
-        res.status(200).json({ text: response });
+        const prompt = req.body.prompt || "Say this is a test!";
+
+        const response = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo", // or "gpt-3.5-turbo"
+            messages: [{ role: "user", content: prompt }],
+        });
+
+        res.status(200).json(response);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal server error" });
+        console.error("Error:", error);
+
+        if (error.response && error.response.data) {
+            res.status(error.response.status).json(error.response.data);
+        } else {
+            res.status(500).json({ error: "Internal server error" });
+        }
     }
 }

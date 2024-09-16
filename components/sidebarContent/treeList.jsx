@@ -3,6 +3,8 @@ import MainContainer from "../layout/mainContainer";
 import ReactPaginate from "react-paginate";
 import TreeListItem from "./items/treeListItem";
 import Data from "../map/data";
+import areaGeoJSON from "../map/data/areas";
+
 import { GiConvergenceTarget } from "react-icons/gi";
 
 // FUNCTIONS
@@ -10,8 +12,13 @@ import { getUserLocation } from "../../functions/getUserLocation";
 import filterByDistance from "../../functions/filterByDistance";
 
 const TreeList = (props) => {
+    // Convert areaGeoJSON object to an array from its "features" property
+    const geoJSONFeaturesArray = Object.values(areaGeoJSON.features);
+
     const [itemsAll, setItemsAll] = useState(
-        Data.filter((e) => !e.properties.isClaimed).sort((a, b) => b.donator.sum - a.donator.sum)
+        geoJSONFeaturesArray
+            .filter((e) => !e.properties.isClaimed) // Filter unclaimed areas
+            .sort((a, b) => b.properties.sum - a.properties.sum) // Sort by the `sum` field in properties
     );
     const [items, setItems] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
