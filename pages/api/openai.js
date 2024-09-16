@@ -15,8 +15,8 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: "Please send your prompt" });
         }
 
-        const aiResult = await openai.createCompletion({
-            model: "text-davinci-003",
+        const aiResult = await openai.chat.createCompletion({
+            model: "gpt-3.5-turbo",
             prompt: `${prompt}`,
             temperature: 0.9,
             max_tokens: 2048,
