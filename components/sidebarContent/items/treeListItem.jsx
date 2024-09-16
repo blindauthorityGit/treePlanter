@@ -8,15 +8,16 @@ function TreeListItem(props, ref) {
     const [address, setAddress] = useState("");
 
     useEffect(() => {
-        async function fetchAddress() {
-            const response = await fetch(
-                `https://api.mapbox.com/geocoding/v5/mapbox.places/${props.e.geometry.coordinates[0]},${props.e.geometry.coordinates[1]}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_API}`
-            );
-            const data = await response.json();
-            setAddress(data.features[0].place_name);
-        }
+        // async function fetchAddress() {
+        //     const response = await fetch(
+        //         `https://api.mapbox.com/geocoding/v5/mapbox.places/${props.e.geometry.coordinates[0]},${props.e.geometry.coordinates[1]}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_API}`
+        //     );
+        //     const data = await response.json();
+        //     setAddress(data.features[0].place_name);
+        // }
 
-        fetchAddress();
+        // fetchAddress();
+        console.log(props);
     }, []);
 
     return (
@@ -41,7 +42,7 @@ function TreeListItem(props, ref) {
                             </div>
                         ) : (
                             <div className="text-xl h-full w-full">
-                                {props.e.donator.avatar ? (
+                                {props.e?.donator?.avatar ? (
                                     <div
                                         className="avatar w-12 h-12 bg-cover rounded-full"
                                         style={{ backgroundImage: `url(${props.e.donator.avatar})` }}
@@ -49,15 +50,18 @@ function TreeListItem(props, ref) {
                                         {/* <img className="rounded-full" src={props.e.image} alt="avtrImg" /> */}
                                     </div>
                                 ) : (
-                                    <BsTree></BsTree>
+                                    <div className="flex items-center text-sm font-semibold">
+                                        {" "}
+                                        {props.e.properties.treesPlanted} <BsTree></BsTree>
+                                    </div>
                                 )}
                             </div>
                         )}
                     </div>
 
-                    <div className="right col-span-7 text-xs sm:text-sm w-auto lg:w-64">{address}</div>
+                    <div className="right col-span-7 text-xs sm:text-sm w-auto lg:w-64">{props.e.properties.name}</div>
                     <div className="right col-span-3 text-xs sm:text-sm w-auto pl-6 text-right">
-                        <strong>€{props.e.donator.sum} / 500,-</strong>
+                        <strong>€{props.e.properties.sum} / 10.000,-</strong>
                     </div>
                 </div>
                 <hr />
@@ -73,7 +77,7 @@ function TreeListItem(props, ref) {
                         initial={{
                             width: 0,
                         }}
-                        animate={{ width: (props.e.donator.sum / 500) * 100 + "%" }}
+                        animate={{ width: (props.e.properties.sum / 10000) * 100 + "%" }}
                         transition={{ duration: "300ms", delay: 1.35, type: "spring" }}
                     ></motion.div>
                 </div>
